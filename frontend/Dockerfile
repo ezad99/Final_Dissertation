@@ -1,19 +1,20 @@
-# Use an official Node runtime as a parent image
-FROM node:14
+# frontend/Dockerfile
+# 1. Use Node.js as the base image
+FROM node:18 AS builder
 
-# Set the working directory in the container
+# 2. Set working directory and copy the frontend code
 WORKDIR /app
 
-# Copy the package.json and install dependencies
-COPY package.json /app/
+# Clear npm cache
+RUN npm cache clean --force
+COPY . .
+
+# 3. Install dependencies and build the project
 RUN npm install
+RUN npm run build
 
-# Bundle app source including the public and src directories
-COPY ./public /app/public
-COPY ./src /app/src
-
-# Make port 3000 available to the world outside this container
+# 4. Expose the port for Vite preview
 EXPOSE 3000
 
-# Run npm start when the container launches
-CMD ["npm", "start"]
+# 5. Start Vite preview server in production mode
+CMD ["npm", "run", "preview"]

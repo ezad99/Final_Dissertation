@@ -1,19 +1,18 @@
 services:
   backend:
     build: ./backend
-    expose: 
-      - "8000"
     ports:
       - "8000:8000"
     volumes:
       - ./backend/app:/code/app
+    env_file:
+      - .env
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
+      - "4173:4173"  
     depends_on:
       - backend

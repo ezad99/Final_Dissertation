@@ -1,9 +1,8 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-
+from .ai_integration import *
 
 app = FastAPI()
-
 
 origins = ["*"]
 app.add_middleware(
@@ -17,4 +16,15 @@ app.add_middleware(
 
 @app.get("/")
 async def read_root():
-    return {"message": "Hello World"}
+    return {"content": "Hello World"}
+
+
+@app.get("/data")
+def read_data():
+    return {"content": "Hello from the other Side"}
+
+
+@app.post("/text")
+async def get_text(question_type: int, question: str):
+    response = process_text_question(question_type, question)
+    return {"content": response}
