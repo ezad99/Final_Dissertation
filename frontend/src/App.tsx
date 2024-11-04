@@ -2,6 +2,7 @@ import {useState } from 'react'
 import '@mantine/core/styles.css';
 import { MantineProvider, Button } from '@mantine/core';
 import TextBox from './components/TextBox';
+import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 
 import './App.css'
 import useFetch from './api';
@@ -27,19 +28,22 @@ function App() {
 
   return (
     <MantineProvider> 
-    <div>
-      <DataDisplay data={data} loading={loading} error={error}/>
-    </div>
-    <div>
-      <h2>Question:</h2>
-      <TextBox onChange={handleTextBoxChange} input={inputValue} />
-      <Button 
-        variant="filled" 
-        color="grape"
-        onClick={handleSubmit}
-         >Submit</Button>
-      <p>Current Input: {inputValue}</p>
-      <p>Submitted Value: {submittedValue}</p>
+    <div className='app'>
+      <div className="editor">
+        <DataDisplay data={data} loading={loading} error={error}/>
+        <Editor className='code'height="90vh" defaultLanguage="javascript" defaultValue="// some comment" />;
+      </div>
+      <div className='question'>
+        <h2>Question:</h2>
+        <TextBox onChange={handleTextBoxChange} input={inputValue} />
+        <Button 
+          variant="filled" 
+          color="grape"
+          onClick={handleSubmit}
+          >Submit</Button>
+        <p>Current Input: {inputValue}</p>
+        <p>Submitted Value: {submittedValue}</p>
+      </div>
     </div>
   </MantineProvider>
    

@@ -1,15 +1,33 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .content {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+.app {
+  display: flex;
+  justify-content: center;
+  height: 70vh;
+  width: 100vw;
+  padding: 20px;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.editor {
+  background-color: magenta;
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: center;
+  width:100%;
+  max-width: 800px; 
+}
+
+.code {
+  height: 60%;
+  width: 100%;
+}
+
+.question {
+  background-color: cyan;
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  width:100%;
+  max-width: 400px; 
+}
