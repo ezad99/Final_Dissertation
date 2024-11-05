@@ -29,5 +29,17 @@
   margin: 1rem;
   padding: 2rem 2rem;
   width:100%;
+  max-width: 500px; 
+}
+
+.textBox {
+  border: 1px solid black;
+  margin: 1rem;
+  width:100%;
   max-width: 400px; 
+}
+
+.button {
+  display: flex;
+  margin: 1rem;
 }

@@ -1,25 +1,28 @@
 import { TextInput } from '@mantine/core';
 
 interface TextBoxProps {
+    className: string
     onChange: (value: string) => void
     input: string
 }
 
-function TextBox({onChange, input}: TextBoxProps) {
+function TextBox({className, onChange, input}: TextBoxProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.currentTarget.value;
     onChange(newValue);
   };
 
   return (
-    <TextInput
-      value={input}
-      variant="filled"
-      size="md"
-      // error="Invalid Input"
-      placeholder="Input Question"
-      onChange={handleChange}
-    />
+    <div className={className}>
+      <TextInput
+        value={input}
+        variant="filled"
+        size="md"
+        // error="Invalid Input"
+        placeholder="Input Question"
+        onChange={handleChange}
+      />
+    </div>
   );
 }
 

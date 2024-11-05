@@ -6,17 +6,17 @@ import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 
 import './App.css'
 import useFetch from './api';
-import { DATA } from '../config';
+import {DATA} from '../config';
 import DataDisplay from './components/DataDisplay';
 
 function App() {
   const {data, loading, error} = useFetch(DATA);
+
   const [inputValue, setInputValue] = useState('');
   const [submittedValue, setSubmittedValue] = useState('');
 
   const handleTextBoxChange = (value: string) => {
     setInputValue(value);
-    // You can perform other actions with the value here
     console.log("Input value:", value);
   };
 
@@ -31,18 +31,20 @@ function App() {
     <div className='app'>
       <div className="editor">
         <DataDisplay data={data} loading={loading} error={error}/>
-        <Editor className='code'height="90vh" defaultLanguage="javascript" defaultValue="// some comment" />;
+        <Editor className='code'height="90vh" defaultLanguage="java" defaultValue="// some comment" />;
       </div>
       <div className='question'>
         <h2>Question:</h2>
-        <TextBox onChange={handleTextBoxChange} input={inputValue} />
+        <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
         <Button 
+          className='button'
           variant="filled" 
           color="grape"
           onClick={handleSubmit}
           >Submit</Button>
         <p>Current Input: {inputValue}</p>
         <p>Submitted Value: {submittedValue}</p>
+        <p>Solution: </p>
       </div>
     </div>
   </MantineProvider>
