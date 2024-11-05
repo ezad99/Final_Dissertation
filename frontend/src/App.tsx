@@ -2,15 +2,17 @@ import {useState } from 'react'
 import '@mantine/core/styles.css';
 import { MantineProvider, Button } from '@mantine/core';
 import TextBox from './components/TextBox';
-import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+// import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 
 import './App.css'
-import useFetch from './api';
 import {DATA} from '../config';
 import DataDisplay from './components/DataDisplay';
+import useGet from './hooks/useGet';
+import { DataModel,mapData } from './models/apiModels';
 
 function App() {
-  const {data, loading, error} = useFetch(DATA);
+  const {data, loading, error} = useGet<DataModel>(DATA, mapData);
 
   const [inputValue, setInputValue] = useState('');
   const [submittedValue, setSubmittedValue] = useState('');

@@ -1,9 +1,9 @@
 // DataDisplay.tsx
 import React from 'react';
-import { ApiResponse } from '../types';
+import { DataModel } from '../models/apiModels';
 
 interface DataDisplayProps {
-  data: ApiResponse | null;
+  data: DataModel | null;
   loading: boolean;
   error: string | null;
 }
@@ -18,7 +18,7 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading, error }) => {
   }
 
   if (data) {
-    return <p>{data?.content || "No content available"}</p>;
+    return <p>{"API Sanity Check: " + data?.content || "No content available"}</p>;
   }
 
   return <p>No data available</p>;
