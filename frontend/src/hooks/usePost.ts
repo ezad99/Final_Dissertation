@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from "react";
+import {useState, useCallback} from "react";
 
 export const usePost = <BodyData, ResponseData>(query: string,headers?: HeadersInit):
 {
@@ -8,7 +8,7 @@ export const usePost = <BodyData, ResponseData>(query: string,headers?: HeadersI
     responseData: ResponseData | null;
 } => {
     const [responseData, setResponseData] = useState<ResponseData | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null)
 
     const post = useCallback(
@@ -21,6 +21,7 @@ export const usePost = <BodyData, ResponseData>(query: string,headers?: HeadersI
                     headers,
                 });
                 const json = await response.json();
+                console.group("Response from backend:", json);
 
                 setResponseData(json);
                 setLoading(false);
