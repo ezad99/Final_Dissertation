@@ -24,6 +24,7 @@
 }
 
 .question {
+  overflow-y: auto; 
   background-color: cyan;
   border: 1px solid black;
   margin: 1rem;
@@ -42,4 +43,23 @@
 .button {
   display: flex;
   margin: 1rem;
+}
+
+/* App.css or relevant CSS file */
+
+.container {
+  background-color: aliceblue;
+  width: 100%;  /* Ensure full width */
+  max-width: 800px;  /* Adjust max-width as needed to control the size of the container */
+  margin: 0 auto;  /* Center the container horizontally */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-wrap: break-word;  /* This ensures that long words break and stay within the container */
+  word-wrap: break-word;  /* This also ensures text wrapping */
+}
+
+.react-markdown {
+  word-wrap: break-word; /* Ensures text wraps correctly within the container */
+  line-height: 1.5; /* Optional: adjusts line height for better readability */
+  font-size: 1rem; /* Optional: adjusts font size */
 }

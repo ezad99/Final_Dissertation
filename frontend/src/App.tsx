@@ -1,6 +1,6 @@
 import {useState } from 'react'
 import '@mantine/core/styles.css';
-import { MantineProvider, Button } from '@mantine/core';
+import { MantineProvider, Button, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
 // import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import Editor from '@monaco-editor/react';
@@ -11,6 +11,7 @@ import DataDisplay from './components/DataDisplay';
 import useGet from './hooks/useGet';
 import { GetDataModel,getMapData,PostTextPayload, PostTextResponse } from './models/apiModels';
 import { usePost } from './hooks/usePost';
+import ReactMarkdown from 'react-markdown';
 
 function App() {
   const {data, loading, error} = useGet<GetDataModel>(DATA, getMapData);
@@ -74,11 +75,17 @@ function App() {
           >Submit</Button>
         <p>Current Input: {inputValue}</p>
         <p>Submitted Value: {submittedValue}</p>
-         {/* Show loading, error, or response data */}
+        {/* Show loading, error, or response data */}
         <p>Solution:</p>
         {textLoading && <p>Loading solution...</p>}
         {textError && <p>Error: {textError}</p>}
-        {textData && <p>{textData.content.content}</p>}
+
+        {/* Render the markdown response */}
+        {textData && (
+          <Container className='container'>
+            <ReactMarkdown className="react-markdown">{textData.content.content}</ReactMarkdown>
+          </Container>
+        )}
       </div>
     </div>
   </MantineProvider>
