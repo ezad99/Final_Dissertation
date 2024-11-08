@@ -72,7 +72,7 @@ function App() {
           variant="filled" 
           color="grape"
           onClick={handleSubmit}
-          >Submit</Button>
+          >How To Write Code</Button>
         <p>Current Input: {inputValue}</p>
         <p>Submitted Value: {submittedValue}</p>
         {/* Show loading, error, or response data */}
