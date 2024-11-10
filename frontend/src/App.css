@@ -1,0 +1,63 @@
+.app {
+  display: flex;
+  justify-content: center;
+  height: 70vh;
+  width: 100vw;
+  padding: 20px;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.editor {
+  background-color: magenta;
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  text-align: center;
+  width:100%;
+  max-width: 800px; 
+}
+
+.code {
+  height: 60%;
+  width: 100%;
+}
+
+.question {
+  overflow-y: auto; 
+  background-color: cyan;
+  border: 1px solid black;
+  margin: 1rem;
+  padding: 2rem 2rem;
+  width:100%;
+  max-width: 900px; 
+}
+
+.textBox {
+  border: 1px solid black;
+  margin: 1rem;
+  width:100%;
+  max-width: 800px; 
+}
+
+.button {
+  display: flex;
+  margin: 1rem;
+}
+
+.container {
+  background-color: aliceblue;
+  width: 100%;  
+  max-width: 1500px;  
+  margin: 0 auto; 
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-wrap: break-word;  
+  word-wrap: break-word;  
+}
+
+.react-markdown {
+  word-wrap: break-word; 
+  line-height: 1.5; 
+  font-size: 1rem; 
+}
