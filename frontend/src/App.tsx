@@ -15,17 +15,16 @@ import ReactMarkdown from 'react-markdown';
 
 function App() {
   const {data, loading, error} = useGet<GetDataModel>(DATA, getMapData);
-  // const {textData, textLoading, textError, post} = usePost<PostTextPayload, PostTextResponse>(TEXT,
-  //    {"Content-Type": "application/json"})
 
-  const {responseData: textData, loading: textLoading, error: textError, post} = usePost<PostTextPayload, PostTextResponse>(TEXT,
+  const {responseData: textData, loading: textLoading, error: textError, post} 
+  = usePost<PostTextPayload, PostTextResponse>(TEXT,
   {"Content-Type": "application/json"})
 
   const [inputValue, setInputValue] = useState('');
   const [submittedValue, setSubmittedValue] = useState('');
   const [question,setQuestion] = useState<PostTextPayload>({
     question_type: 1,
-    question: "How to make quick sort algorithm"
+    question: ""
   })
 
   const handleTextBoxChange = (value: string) => {
@@ -33,27 +32,23 @@ function App() {
     console.log("Input value:", value);
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
     setSubmittedValue(inputValue);
     setInputValue('')
     setQuestion((prevQuestion) => ({
       ...prevQuestion,
+      question_type: questionType,
       question: inputValue
     }))
 
     await post({
       ...question,
-      question: inputValue,
+      question_type: questionType,
+      question: inputValue
     })
 
     console.log('Received response:', textData);
-
-    // const questionPayload = {
-    //   question_type: 1,
-    //   question: "How to make quick sort algorithm"
-    // };
-    // post(questionPayload);
 
   }
 
@@ -71,8 +66,20 @@ function App() {
           className='button'
           variant="filled" 
           color="grape"
-          onClick={handleSubmit}
+          onClick={() => handleSubmit(1)}
           >How To Write Code</Button>
+        <Button 
+          className='button'
+          variant="filled" 
+          color="orange"
+          onClick={() => handleSubmit(2)}
+          >General Question</Button>
+        <Button 
+          className='button'
+          variant="filled" 
+          color="maroon"
+          onClick={() => handleSubmit(3)}
+          >How To Fix Code</Button>
         <p>Current Input: {inputValue}</p>
         <p>Submitted Value: {submittedValue}</p>
         {/* Show loading, error, or response data */}

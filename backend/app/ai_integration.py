@@ -15,17 +15,6 @@ if not api_key:
 
 openai.api_key = api_key
 
-# completion = openai.chat.completions.create(
-#     model="gpt-4o-mini",
-#     messages=[
-#         {"role": "system", "content": "You are a helpful assistant."},
-#         {
-#             "role": "user",
-#             "content": "Write a haiku about recursion in programming."
-#         }
-#     ]
-# )
-
 def process_text_question(question_type: int, question: str) -> str:
   question_type = QUESTION_CONSTANTS.get(question_type)
 
