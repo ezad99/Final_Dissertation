@@ -1,9 +1,7 @@
-import {useState } from 'react'
+import {useState, useEffect } from 'react'
 import '@mantine/core/styles.css';
 import { MantineProvider, Button, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
-// import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
-import Editor from '@monaco-editor/react';
 
 import './App.css'
 import {DATA, TEXT} from '../config';
@@ -18,26 +16,19 @@ function App() {
 
   // Array representing all Button Types
   const buttons = [
-    { text: "How To Write Code", color: "grape", type: 1 },
-    { text: "General Question", color: "orange", type: 2 },
-    { text: "How To Fix Code", color: "maroon", type: 3 },
+    { key:1, text: "How To Write Code", color: "grape", onClick: () => handleTextSubmit(1)},
+    { key:2, text: "General Question", color: "orange", onClick: () => handleTextSubmit(2)},
+    { key:3, text: "How To Fix Code", color: "maroon", onClick: () => handleEditorContentSubmit(3)},
   ];
 
   // Fetch Data for SanityCheck
   const {data, loading, error} = useGet<GetDataModel>(DATA, getMapData);
 
-  // POST data from text 
-  // TEXT is the endpoint URL
-  // `post` triggers the post request
-  const {responseData: textData, loading: textLoading, error: textError, post} 
-  = usePost<PostTextPayloadModel, PostTextResponseModel>(TEXT,
-  {"Content-Type": "application/json"})
-
   // State to hold the current value in the textbox
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] =  useState<string>("");
 
   // State to keep track of the value submitted by the user
-  const [submittedValue, setSubmittedValue] = useState('');
+  const [submittedValue, setSubmittedValue] =  useState<string>("");
 
   // State to hold the question object for the API payload
   const [question,setQuestion] = useState<PostTextPayloadModel>({
@@ -52,9 +43,19 @@ function App() {
     console.log("Input value:", value);
   };
 
+  // State to determine whether to display as text or as code
+  const [displayInEditor, setDisplayInEditor] = useState<boolean>(false);
+
+  // POST data from text 
+  // TEXT is the endpoint URL
+  // `post` triggers the post request
+  const {responseData: textData, loading: textLoading, error: textError, post} 
+  = usePost<PostTextPayloadModel, PostTextResponseModel>(TEXT,
+  {"Content-Type": "application/json"})
+
   // Handles form submission when a button is clicked
   // Takes `questionType` as an argument to set the type of question being asked.
-  const handleSubmit = async(questionType: number) => {
+  const handleTextSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
     setSubmittedValue(inputValue); // Save the current input value
     setInputValue('') // Clear the input field
@@ -62,6 +63,10 @@ function App() {
       question_type: questionType,
       question: inputValue
     })
+
+    console.log(question);
+
+    setDisplayInEditor(false);
 
     await post({
       question_type: questionType,
@@ -71,13 +76,52 @@ function App() {
     console.log('Received response:', textData);
   }
 
-  const [editorContent, setEditorContent] = useState<string | undefined>("");
+  // State to keep track of Code Editor Content
+  const [editorContent, setEditorContent] = useState<string>("");
+
+  // State to keep track of the code submitted by the user
+  const [submittedEditorContent, setSubmittedEditorContent] = useState<string>("");
   
+  // Handles Code Editor Content Changes
   const handleEditorContentChange = (content: string | undefined) => {
-    setEditorContent(content)
+    setEditorContent(content ?? "")
     console.log("Editor content update: ", content)
   }
 
+  // Handle Code submission
+  const handleEditorContentSubmit = async(questionType: number) => {
+    console.log("Submitted code:", editorContent);
+    setSubmittedEditorContent(editorContent);
+    setQuestion({
+      question_type: questionType,
+      question: editorContent
+    })
+
+    console.log(question);
+    
+    setDisplayInEditor(true);
+
+    await post({
+      question_type: questionType,
+      question: editorContent
+    })
+
+    // Update editor with response
+    if (textData && textData.content && textData.content.content) {
+      setEditorContent(textData.content.content); 
+    }
+
+    console.log('Received response:', textData)
+  }
+
+  // Effect hook to handle updates to textData
+  useEffect(() => {
+    if (displayInEditor && textData && textData.content && textData.content.content) {
+      setEditorContent(textData.content.content);
+    }
+  }, [textData, displayInEditor]); // This effect runs whenever textData changes
+
+  // Manipulates Code in Code Editor
   const manipulateCode = () => {
     if (editorContent) {
       // Add Comments
@@ -101,41 +145,40 @@ function App() {
         <div className="button-container">
           {buttons.map((button) => (
             <Button
-              key={button.type}
+              key={button.key}
               className='button'
               variant="filled"
               color={button.color}
               radius="md"
               size="md"
-              onClick={() => handleSubmit(button.type)}
+              onClick={button.onClick}
             >
               {button.text}
             </Button>
           ))}
-            <Button
-              key={99}
-              className='button'
-              variant="filled"
-              color="darkblue"
-              radius="md"
-              size="md"
-              onClick={manipulateCode}
-            >
-              Manipulate Code
-            </Button>
         </div>
+        <Button onClick={manipulateCode}>Modify Code</Button>
         <p>Current Input: {inputValue}</p>
         <p>Submitted Value: {submittedValue}</p>
         {/* Show loading, error, or response data */}
         <p>Solution:</p>
-        {textLoading && <p>Loading solution...</p>}
-        {textError && <p>Error: {textError}</p>}
-
-        {/* Render the markdown response */}
-        {textData && (
-          <Container className='container'>
-            <ReactMarkdown className="react-markdown">{textData.content.content}</ReactMarkdown>
-          </Container>
+        {displayInEditor ? (
+          // Show response in the Code Editor
+          <p>Code Editor Updated</p>
+        ) : (
+          loading ? (
+            <p>{textLoading}</p>
+          ) : error ? (
+            <p className='error'>An error occurred: {textError}</p>
+          ) :
+          // Show response in the Container
+          textData && (
+            <Container className="container">
+              <ReactMarkdown className="react-markdown">
+                {textData.content.content}
+              </ReactMarkdown>
+            </Container>
+          )
         )}
       </div>
     </div>

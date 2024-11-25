@@ -1,9 +1,9 @@
 // DataDisplay.tsx
 import React from 'react';
-import { DataModel } from '../models/apiModels';
+import { GetDataModel } from '../models/apiModels';
 
 interface DataDisplayProps {
-  data: DataModel | null;
+  data: GetDataModel | null;
   loading: boolean;
   error: string | null;
 }

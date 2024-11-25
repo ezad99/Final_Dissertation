@@ -1,5 +1,5 @@
 import { Editor } from "@monaco-editor/react";
-import { useState,useRef } from "react";
+import { useRef } from "react";
 
 const CodeEditor = ({value, onChange}: {value: string | undefined; onChange: (value: string | undefined) => void}) => {
     const editorRef = useRef<any>(null);
