@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // The interfaces & models for our API Responses & Payloads
 
 export interface GetDataModel {
@@ -17,7 +18,8 @@ export interface PostTextPayloadModel {
 }
 
 // Maps data to PostTextPayloadModel
-export function postMapTextPayload(data: {question_type: number, question: string}): PostTextPayloadModel {
+export function postMapTextPayload(
+    data: {question_type: number, question: string}): PostTextPayloadModel {
     return {
         question_type: data.question_type,
         question: data.question
@@ -38,3 +40,34 @@ export function postMapTextResponse(rawData: any): PostTextResponseModel {
         }
     };
 }
+
+export interface PostCodePayloadModel {
+    question_type: number;
+    code: string;
+}
+
+// Maps data to PostCodePayloadModel 
+export function postMapCodePayload(
+    data: {question_type: number, code: string}): PostCodePayloadModel {
+        return {
+            question_type: data.question_type,
+            code: data.code
+        };
+}
+
+export interface PostCodeResponseModel {
+    content: {
+        content: string;
+    };
+}
+
+// Maps rawData to PostCodeResponseModel
+export function postMapCodeResponse(rawData: any): PostCodeResponseModel {
+    return {
+        content: {
+            content: rawData.content.content,  // Access the nested content field
+        }
+    };
+}
+
+

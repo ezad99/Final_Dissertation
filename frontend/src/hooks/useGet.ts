@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useGet = <T,>(query: string,mapFunction:(rawData: any) => T) => {
     // State variables to track data, loading status, errors
     const [data, setData] = useState<T | null>(null);
@@ -17,6 +18,7 @@ const useGet = <T,>(query: string,mapFunction:(rawData: any) => T) => {
                 setData(mapFunction(json)); // shape data to our model
 
                 setLoading(false); // set loading to false to indicate that api call has ended
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 setError(error.message);
                 setLoading(false); // set loading to false to indicate that the api call has ended

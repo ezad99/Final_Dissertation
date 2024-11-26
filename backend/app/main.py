@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from .models import TextRequest
+from .models import TextRequest, CodeRequest
 from .ai_integration import *
 
 app = FastAPI()
@@ -32,7 +32,12 @@ def read_data():
 #     return {"content": response}
 
 @app.post("/text")
-async def get_text(payload: TextRequest):
-    # Accessing the fields using the Pydantic model
+async def post_text(payload: TextRequest):
     response = process_text_question(payload.question_type, payload.question)
+    return {"content": response}
+
+
+@app.post("/code")
+async def post_code(payload: CodeRequest):
+    response = process_text_question(payload.question_type, payload.code)
     return {"content": response}

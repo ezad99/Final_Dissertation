@@ -49,9 +49,12 @@ function App() {
   // POST data from text 
   // TEXT is the endpoint URL
   // `post` triggers the post request
-  const {responseData: textData, loading: textLoading, error: textError, post} 
+  const {responseData: textData, loading: textLoading, error: textError, post: postText} 
   = usePost<PostTextPayloadModel, PostTextResponseModel>(TEXT,
   {"Content-Type": "application/json"})
+
+  // POST data from code
+  //
 
   // Handles form submission when a button is clicked
   // Takes `questionType` as an argument to set the type of question being asked.
@@ -68,7 +71,7 @@ function App() {
 
     setDisplayInEditor(false);
 
-    await post({
+    await postText({
       question_type: questionType,
       question: inputValue
     })
@@ -101,7 +104,7 @@ function App() {
     
     setDisplayInEditor(true);
 
-    await post({
+    await postText({
       question_type: questionType,
       question: editorContent
     })
