@@ -4,10 +4,10 @@ import { MantineProvider, Button, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
 
 import './App.css'
-import {DATA, TEXT} from '../config';
+import {CODE, DATA, TEXT} from '../config';
 import DataDisplay from './components/DataDisplay';
 import useGet from './hooks/useGet';
-import { GetDataModel,getMapData,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
+import { GetDataModel,getMapData,PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
 import { usePost } from './hooks/usePost';
 import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
@@ -36,6 +36,12 @@ function App() {
     question: ""
   })
 
+    // State to hold the question object for the API payload
+  const [code,setCode] = useState<PostCodePayloadModel>({
+    question_type: 3,
+    code: ""
+  })
+
   // Handles changes in the text box input
   // - Updates the `inputValue` 
   const handleTextBoxChange = (value: string) => {
@@ -48,13 +54,10 @@ function App() {
 
   // POST data from text 
   // TEXT is the endpoint URL
-  // `post` triggers the post request
+  // `postText` triggers the post request
   const {responseData: textData, loading: textLoading, error: textError, post: postText} 
   = usePost<PostTextPayloadModel, PostTextResponseModel>(TEXT,
   {"Content-Type": "application/json"})
-
-  // POST data from code
-  //
 
   // Handles form submission when a button is clicked
   // Takes `questionType` as an argument to set the type of question being asked.
@@ -91,49 +94,47 @@ function App() {
     console.log("Editor content update: ", content)
   }
 
+  // POST data from code
+  // CODE is the endpoint URL
+  // 'postCode' triggers the post request
+  const {responseData: codeData, loading: codeLoading, error: codeError, post: postCode}
+  = usePost<PostCodePayloadModel, PostCodeResponseModel>(CODE,
+    {"Content-Type": "application/json"}
+  )
+
+
   // Handle Code submission
   const handleEditorContentSubmit = async(questionType: number) => {
     console.log("Submitted code:", editorContent);
     setSubmittedEditorContent(editorContent);
-    setQuestion({
+    setCode({
       question_type: questionType,
-      question: editorContent
+      code: editorContent
     })
 
     console.log(question);
     
     setDisplayInEditor(true);
 
-    await postText({
+    await postCode({
       question_type: questionType,
-      question: editorContent
+      code: editorContent
     })
 
     // Update editor with response
-    if (textData && textData.content && textData.content.content) {
-      setEditorContent(textData.content.content); 
+    if (codeData && codeData.content && codeData.content.content) {
+      setEditorContent(codeData.content.content); 
     }
 
-    console.log('Received response:', textData)
+    console.log('Received response:', codeData)
   }
 
-  // Effect hook to handle updates to textData
+  // Effect hook to handle updates to codeData
   useEffect(() => {
-    if (displayInEditor && textData && textData.content && textData.content.content) {
-      setEditorContent(textData.content.content);
+    if (displayInEditor && codeData && codeData.content && codeData.content.content) {
+      setEditorContent(codeData.content.content);
     }
-  }, [textData, displayInEditor]); // This effect runs whenever textData changes
-
-  // Manipulates Code in Code Editor
-  const manipulateCode = () => {
-    if (editorContent) {
-      // Add Comments
-      const updatedCode = `// Modified Code\n${editorContent}`;
-      
-      // Update the editor with the modified code
-      setEditorContent(updatedCode);
-    }
-  }
+  }, [codeData, displayInEditor]); // This effect runs whenever textData changes
 
   return (
     <MantineProvider> 
@@ -160,7 +161,6 @@ function App() {
             </Button>
           ))}
         </div>
-        <Button onClick={manipulateCode}>Modify Code</Button>
         <p>Current Input: {inputValue}</p>
         <p>Submitted Value: {submittedValue}</p>
         {/* Show loading, error, or response data */}
