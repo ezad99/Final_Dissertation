@@ -16,9 +16,9 @@ function App() {
 
   // Array representing all Button Types
   const buttons = [
-    { key:1, text: "How To Write Code", color: "grape", onClick: () => handleTextSubmit(1)},
-    { key:2, text: "General Question", color: "orange", onClick: () => handleTextSubmit(2)},
-    { key:3, text: "How To Fix Code", color: "maroon", onClick: () => handleEditorContentSubmit(3)},
+    { key:1, text: "How To Write Code", color: "#cc5de8", onClick: () => handleTextSubmit(1)},
+    { key:2, text: "General Question", color: "#cc5de8", onClick: () => handleTextSubmit(2)},
+    { key:3, text: "How To Fix Code", color: "#cc5de8", onClick: () => handleEditorContentSubmit(3)},
   ];
 
   // Fetch Data for SanityCheck
@@ -161,14 +161,7 @@ function App() {
             </Button>
           ))}
         </div>
-        <p>Current Input: {inputValue}</p>
-        <p>Submitted Value: {submittedValue}</p>
-        {/* Show loading, error, or response data */}
-        <p>Solution:</p>
-        {displayInEditor ? (
-          // Show response in the Code Editor
-          <p>Code Editor Updated</p>
-        ) : (
+        {
           loading ? (
             <p>{textLoading}</p>
           ) : error ? (
@@ -182,7 +175,7 @@ function App() {
               </ReactMarkdown>
             </Container>
           )
-        )}
+        }
       </div>
     </div>
   </MantineProvider>
