@@ -1,4 +1,3 @@
-// DataDisplay.tsx
 import React from 'react';
 import { GetDataModel } from '../models/apiModels';
 

@@ -11,14 +11,15 @@ import { GetDataModel,getMapData,PostCodePayloadModel,PostCodeResponseModel,Post
 import { usePost } from './hooks/usePost';
 import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
+import Collapsable from './components/Collapsable';
 
 function App() {
 
   // Array representing all Button Types
   const buttons = [
-    { key:1, text: "How To Write Code", color: "#cc5de8", onClick: () => handleTextSubmit(1)},
-    { key:2, text: "General Question", color: "#cc5de8", onClick: () => handleTextSubmit(2)},
-    { key:3, text: "How To Fix Code", color: "#cc5de8", onClick: () => handleEditorContentSubmit(3)},
+    { key:1, text: "How To Write Code",  onClick: () => handleTextSubmit(1)},
+    { key:2, text: "General Question",  onClick: () => handleTextSubmit(2)},
+    { key:3, text: "How To Fix Code",  onClick: () => handleEditorContentSubmit(3)},
   ];
 
   // Fetch Data for SanityCheck
@@ -144,6 +145,7 @@ function App() {
       </div>
       <div className='question'>
         <DataDisplay data={data} loading={loading} error={error}/>
+        <Collapsable/>
         <h2>Question:</h2>
         <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
         <div className="button-container">
@@ -151,8 +153,8 @@ function App() {
             <Button
               key={button.key}
               className='button'
-              variant="filled"
-              color={button.color}
+              variant="gradient"
+              gradient={{ from: 'rgba(132, 0, 255, 1)', to: 'rgba(187, 51, 255, 1)', deg: 114 }}
               radius="md"
               size="md"
               onClick={button.onClick}
@@ -161,12 +163,10 @@ function App() {
             </Button>
           ))}
         </div>
+        {/* Code Loading/Error */}
+        {textLoading && <p>Loading text response...</p>}
+        {textError && <p className='error'>An error occurred: {codeError}</p>}
         {
-          loading ? (
-            <p>{textLoading}</p>
-          ) : error ? (
-            <p className='error'>An error occurred: {textError}</p>
-          ) :
           // Show response in the Container
           textData && (
             <Container className="container">
@@ -176,10 +176,13 @@ function App() {
             </Container>
           )
         }
+        {/* Code Loading/Error */}
+        {codeLoading && <p>Loading code response...</p>}
+        {codeError && <p className='error'>An error occurred: {codeError}</p>}
+
       </div>
     </div>
   </MantineProvider>
-   
   );
 }
 
