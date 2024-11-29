@@ -145,23 +145,26 @@ function App() {
       </div>
       <div className='question'>
         <DataDisplay data={data} loading={loading} error={error}/>
-        <Collapsable/>
         <h2>Question:</h2>
         <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
         <div className="button-container">
-          {buttons.map((button) => (
-            <Button
-              key={button.key}
-              className='button'
-              variant="gradient"
-              gradient={{ from: 'rgba(132, 0, 255, 1)', to: 'rgba(187, 51, 255, 1)', deg: 114 }}
-              radius="md"
-              size="md"
-              onClick={button.onClick}
-            >
-              {button.text}
-            </Button>
-          ))}
+        <Collapsable header="Click to Expand">
+                    <div className="button-container">
+                        {buttons.map((button) => (
+                            <Button
+                                key={button.key}
+                                className="button"
+                                variant="gradient"
+                                gradient={{ from: 'rgba(132, 0, 255, 1)', to: 'rgba(187, 51, 255, 1)', deg: 114 }}
+                                radius="md"
+                                size="md"
+                                onClick={button.onClick}
+                            >
+                                {button.text}
+                            </Button>
+                        ))}
+                    </div>
+                </Collapsable>
         </div>
         {/* Code Loading/Error */}
         {textLoading && <p>Loading text response...</p>}

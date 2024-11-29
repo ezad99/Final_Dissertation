@@ -24,3 +24,5 @@ const DataDisplay: React.FC<DataDisplayProps> = ({ data, loading, error }) => {
 };
 
 export default DataDisplay;
+
+
