@@ -16,7 +16,7 @@ const CodeEditor = ({value, onChange}: {value: string | undefined; onChange: (va
     return (
         <>
             <Editor
-                height="90vh"
+                height="80vh"
                 theme="vs-dark"
                 defaultLanguage="java"
                 defaultValue=""

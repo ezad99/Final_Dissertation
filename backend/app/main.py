@@ -26,11 +26,6 @@ def read_data():
     return {"content": "Hello from the other Side"}
 
 
-# @app.post("/text")
-# async def get_text(question_type: int, question: str):
-#     response = process_text_question(question_type, question)
-#     return {"content": response}
-
 @app.post("/text")
 async def post_text(payload: TextRequest):
     response = process_text_question(payload.question_type, payload.question)
@@ -39,5 +34,10 @@ async def post_text(payload: TextRequest):
 
 @app.post("/code")
 async def post_code(payload: CodeRequest):
+    response = process_text_question(payload.question_type, payload.code)
+    return {"content": response}
+
+@app.post("/code-question")
+async def post_code_question(payload: CodeRequest):
     response = process_text_question(payload.question_type, payload.code)
     return {"content": response}

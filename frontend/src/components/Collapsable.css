@@ -1,5 +1,9 @@
 @import '../constants/colors.css';
 
+.collapsable-container {
+    margin: 1rem;
+}
+
 .header {
     display: flex;
     width: auto;
@@ -11,7 +15,8 @@
     position: relative;
     border-top-left-radius: 0.75rem; 
     border-top-right-radius: 0.75rem;
-    transition: border-radius 0.3s ease, height 0.3s ease; /* Smooth transitions */
+    transition: border-radius 0.3s ease, height 0.3s ease;
+    cursor: pointer;
 }
 
 .rounded-t {
@@ -26,7 +31,7 @@
 .footer {
     display: flex;
     width: auto;
-    height: 5rem; 
+    height: 10rem; 
     background-color: rgb(163, 88, 196);
     flex: auto;
     justify-content: center;

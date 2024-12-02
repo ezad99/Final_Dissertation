@@ -8,10 +8,10 @@ interface CollapsableProps {
 }
 
 const Collapsable: React.FC<CollapsableProps> = ({header, children}) => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     return (
-        <div>
+        <div className='collapsable-container'>
             <div
                 className={`header ${collapsed ? 'rounded-full' : 'rounded-t'}`}
                 onClick={() => setCollapsed(!collapsed)}

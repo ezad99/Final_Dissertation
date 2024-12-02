@@ -4,7 +4,7 @@ import { MantineProvider, Button, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
 
 import './App.css'
-import {CODE, DATA, TEXT} from '../config';
+import {CODE, DATA, TEXT, CODE_QUESTION} from '../config';
 import DataDisplay from './components/DataDisplay';
 import useGet from './hooks/useGet';
 import { GetDataModel,getMapData,PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
@@ -37,9 +37,15 @@ function App() {
     question: ""
   })
 
-    // State to hold the question object for the API payload
+  // State to hold the question object for the API payload
   const [code,setCode] = useState<PostCodePayloadModel>({
     question_type: 3,
+    code: ""
+  })
+
+  // State to hold the question object for the API payload
+  const [codeQuestion,setCodeQuestion] = useState<PostCodePayloadModel>({
+    question_type: 4,
     code: ""
   })
 
@@ -103,7 +109,6 @@ function App() {
     {"Content-Type": "application/json"}
   )
 
-
   // Handle Code submission
   const handleEditorContentSubmit = async(questionType: number) => {
     console.log("Submitted code:", editorContent);
@@ -137,56 +142,121 @@ function App() {
     }
   }, [codeData, displayInEditor]); // This effect runs whenever textData changes
 
+  // POST data from code
+  // CODE is the endpoint URL
+  // 'postCodeQuestion' triggers the post request
+  const {responseData: codeQuestionData, loading: codeQuestionLoading, error: codeQuestionError, post: postCodeQuestion}
+  = usePost<PostCodePayloadModel, PostCodeResponseModel>(CODE_QUESTION,
+    {"Content-Type": "application/json"}
+  )
+
+  // Handle Code submission
+  const handleCodeQuestionSubmit = async(questionType: number) => {
+    console.log("Submitting value:", inputValue);
+    console.log("Submitted code:", editorContent);
+    setSubmittedValue(inputValue); 
+    setSubmittedEditorContent(editorContent);
+    setInputValue('')
+    setCodeQuestion({
+      question_type: questionType,
+      code: inputValue + editorContent
+    })
+    
+    setDisplayInEditor(false);
+
+    await postCodeQuestion({
+      question_type: questionType,
+      code: inputValue + editorContent
+    })
+
+    console.log('Received response:', codeQuestionData)
+  }
+
+
   return (
     <MantineProvider> 
     <div className='app'>
-      <div className="editor">
-        <CodeEditor value={editorContent} onChange={handleEditorContentChange}/>
-      </div>
-      <div className='question'>
-        <DataDisplay data={data} loading={loading} error={error}/>
-        <h2>Question:</h2>
-        <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-        <div className="button-container">
-        <Collapsable header="Click to Expand">
-                    <div className="button-container">
-                        {buttons.map((button) => (
-                            <Button
-                                key={button.key}
-                                className="button"
-                                variant="gradient"
-                                gradient={{ from: 'rgba(132, 0, 255, 1)', to: 'rgba(187, 51, 255, 1)', deg: 114 }}
-                                radius="md"
-                                size="md"
-                                onClick={button.onClick}
-                            >
-                                {button.text}
-                            </Button>
-                        ))}
-                    </div>
-                </Collapsable>
+      <h2 className='title'>GuruJava</h2>
+        <div className='components'>
+          <div className="editor">
+            <h2 >Code Editor</h2>
+            {codeLoading && <p>Loading code response...</p>}
+            {codeError && <p className='error'>An error occurred: {codeError}</p>}
+            <CodeEditor value={editorContent} onChange={handleEditorContentChange}/>
+          </div>
+          <div className='question'>
+            {/* <DataDisplay data={data} loading={loading} error={error}/> */}
+            <Collapsable header="How To Write Code">
+            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+                <Button
+                    key={1}
+                    className="button"
+                    variant="filled"
+                    color="rgb(145, 0, 207)"
+                    radius="md"
+                    size="md"
+                    onClick={() => handleTextSubmit(1)}>
+                    {"Submit"}
+                </Button>
+            </Collapsable>
+            <Collapsable header="General Question">
+            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+                <Button
+                    key={2}
+                    className="button"
+                    variant="filled"
+                    color="rgb(145, 0, 207)"
+                    radius="md"
+                    size="md"
+                    onClick={() => handleTextSubmit(2)}>
+                    {"Submit"}
+                </Button>
+            </Collapsable>
+            <Collapsable header="How To Fix Code">
+            <p>Add your code you want to to be fixed into the code editor </p>
+                <Button
+                    key={3}
+                    className="button"
+                    variant="filled"
+                    color="rgb(145, 0, 207)"
+                    radius="md"
+                    size="md"
+                    onClick={() =>  handleEditorContentSubmit(3)}>
+                    {"Submit"}
+                </Button>
+            </Collapsable>
+            <Collapsable header="Question From Code">
+            <p>Ask Question from the Code in the Code Editor </p>
+            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+                <Button
+                    key={4}
+                    className="button"
+                    variant="filled"
+                    color="rgb(145, 0, 207)"
+                    radius="md"
+                    size="md"
+                    onClick={() =>  handleCodeQuestionSubmit(4)}>
+                    {"Submit"}
+                </Button>
+            </Collapsable>
+            <h2>Output</h2>
+              <Container className="container">
+                {textLoading && <p>Loading text response...</p>}
+                {textError && <p className='error'>An error occurred: {codeError}</p>}
+                {textData &&  (
+                <ReactMarkdown className="react-markdown">
+                  {textData.content.content}
+                </ReactMarkdown>
+                  )
+                }
+              </Container>
+          </div>
         </div>
-        {/* Code Loading/Error */}
-        {textLoading && <p>Loading text response...</p>}
-        {textError && <p className='error'>An error occurred: {codeError}</p>}
-        {
-          // Show response in the Container
-          textData && (
-            <Container className="container">
-              <ReactMarkdown className="react-markdown">
-                {textData.content.content}
-              </ReactMarkdown>
-            </Container>
-          )
-        }
-        {/* Code Loading/Error */}
-        {codeLoading && <p>Loading code response...</p>}
-        {codeError && <p className='error'>An error occurred: {codeError}</p>}
-
-      </div>
     </div>
   </MantineProvider>
   );
 }
 
 export default App;
+
+

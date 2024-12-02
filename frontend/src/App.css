@@ -1,33 +1,63 @@
 @import './constants/colors.css';
 
+html {
+  font-size: 100%;
+}
+
+body {
+  font-size: 1rem; 
+}
+
+
 .app {
   display: flex;
   background-color: var(--background-color);
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  padding: 20px;
-  flex-direction: row;
+  padding: 1.25rem;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
-.editor {
-  background-color: var(--primary-color);
-  border: 0.5px solid black;
-  border-radius: 0.75rem;
-  margin: 0.5rem;
-  padding: 1rem 1rem;
-  text-align: center;
-  width:100%;
-  max-width: 1000px; 
+.components {
+  display: flex;
+  flex-direction: row;
 }
 
-.code {
-  height: 60%;
-  width: 100%;
+.title {
+  display: flex;
+  color: white;
+  justify-content: center;
+  font-size: xx-large;
+  margin-bottom: 0.5rem;
+  padding: 0; 
+}
+
+.editor, .question {
+  height: 90vh;
+  width: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.editor {
+  display: flex;
+  color: white;
+  align-self: center;
+  background-color: var(--primary-color);
+  border: 0.03125rem solid black;
+  border-radius: 0.75rem;
+  margin: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  width:90%;
+  max-width: 62.5rem; 
 }
 
 .question {
+  align-self: center;
   background-color: var(--primary-color);
   overflow-y: auto; 
   border-radius: 0.75rem;
@@ -35,9 +65,8 @@
   border: 1px solid black;
   margin: 1rem;
   padding: 2rem 2rem;
-  width:100%;
-  min-width: 1000px;
-  max-width: 1200px; 
+  width:90%;
+  max-width: 65.5rem; 
 }
 
 .textBox {
@@ -57,17 +86,19 @@
 }
 
 .button:hover {
-  background-color: rgb(204, 0, 255); 
   color: lightgray;
 }
 
 .container {
-  width: 100%;
-  min-width: 1000px;
-  max-width: 1500px;
-  background-color: rgb(32, 32, 32);
-  margin: 0 auto; 
-  padding: 20px;
+  flex: 1; 
+  height: 100%; 
+  width: 100%; 
+  max-width: 70rem; 
+  max-height: 90vh; 
+  background-color: rgb(34, 33, 33);
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
   box-sizing: border-box;
   overflow-wrap: break-word;  
   word-wrap: break-word;  
