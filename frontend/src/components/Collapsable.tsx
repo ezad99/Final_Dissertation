@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 interface CollapsableProps {
     header: string;
-    children: ReactMode;
+    children: React.ReactNode;
 }
 
 const Collapsable: React.FC<CollapsableProps> = ({header, children}) => {

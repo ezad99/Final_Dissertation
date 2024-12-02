@@ -31,6 +31,8 @@ function App() {
   // State to keep track of the value submitted by the user
   const [submittedValue, setSubmittedValue] =  useState<string>("");
 
+  const [lastSubmittedType, setLastSubmittedType] = useState<number | null>(null);
+
   // State to hold the question object for the API payload
   const [question,setQuestion] = useState<PostTextPayloadModel>({
     question_type: 1,
@@ -70,6 +72,7 @@ function App() {
   // Takes `questionType` as an argument to set the type of question being asked.
   const handleTextSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
+    
     setSubmittedValue(inputValue); // Save the current input value
     setInputValue('') // Clear the input field
     setQuestion({
@@ -85,6 +88,8 @@ function App() {
       question_type: questionType,
       question: inputValue
     })
+
+    setLastSubmittedType(1)
 
     console.log('Received response:', textData);
   }
@@ -169,6 +174,8 @@ function App() {
       code: inputValue + editorContent
     })
 
+    setLastSubmittedType(4)
+
     console.log('Received response:', codeQuestionData)
   }
 
@@ -241,15 +248,24 @@ function App() {
             </Collapsable>
             <h2>Output</h2>
               <Container className="container">
-                {textLoading && <p>Loading text response...</p>}
-                {textError && <p className='error'>An error occurred: {codeError}</p>}
-                {textData &&  (
-                <ReactMarkdown className="react-markdown">
-                  {textData.content.content}
-                </ReactMarkdown>
-                  )
-                }
-              </Container>
+                  {/* Render text response if available and it was the last submission */}
+                  {textLoading && <p>Loading text response...</p>}
+                  {textError && <p className='error'>An error occurred: {textError}</p>}
+                  {/* Render code question response if available and it was the last submission */}
+                  {codeQuestionLoading && <p>Loading code question response...</p>}
+                  {codeQuestionError && <p className='error'>An error occurred: {codeQuestionError}</p>}
+                  
+                  {lastSubmittedType === 1 && textData && (
+                      <ReactMarkdown className="react-markdown">
+                          {textData.content.content}
+                      </ReactMarkdown>
+                  )}
+                  {lastSubmittedType === 4 && codeQuestionData && (
+                      <ReactMarkdown className="react-markdown">
+                          {codeQuestionData.content.content}
+                      </ReactMarkdown>
+                  )}
+            </Container>
           </div>
         </div>
     </div>
