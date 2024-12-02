@@ -1,0 +1,65 @@
+@import '../constants/colors.css';
+
+.collapsable-container {
+    margin: 1rem;
+}
+
+.header {
+    display: flex;
+    width: auto;
+    height: 3rem;
+    background-color: rgb(145, 0, 207);
+    flex: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-top-left-radius: 0.75rem; 
+    border-top-right-radius: 0.75rem;
+    transition: border-radius 0.3s ease, height 0.3s ease;
+    cursor: pointer;
+}
+
+.rounded-t {
+    border-bottom-left-radius: 0; 
+    border-bottom-right-radius: 0;
+}
+
+.rounded-full {
+    border-radius: 0.75rem; 
+}
+
+.footer {
+    display: flex;
+    width: auto;
+    height: 10rem; 
+    background-color: rgb(163, 88, 196);
+    flex: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-bottom-left-radius: 0.75rem; 
+    border-bottom-right-radius: 0.75rem;
+    overflow: hidden;
+    transition: height 0.3s ease; 
+}
+
+.footer.collapsed {
+    height: 0; 
+    padding: 0; 
+    border-bottom-left-radius: 0.75rem; 
+    border-bottom-right-radius: 0.75rem;
+}
+
+.arrow {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    right: 1.25rem;
+    rotate: 90deg;
+    transform: rotate(180deg);
+    position: absolute;
+    transition: transform 0.3s ease;
+}
+
+.rotate-90 {
+    transform: rotate(90deg);
+}

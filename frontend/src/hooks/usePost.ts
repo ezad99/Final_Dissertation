@@ -25,6 +25,7 @@ export const usePost = <BodyData, ResponseData>(query: string,headers?: HeadersI
 
                 setResponseData(json);
                 setLoading(false);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 setError(error.message);
                 setLoading(false);

@@ -1,36 +1,73 @@
+@import './constants/colors.css';
+
+html {
+  font-size: 100%;
+}
+
+body {
+  font-size: 1rem; 
+}
+
+
 .app {
   display: flex;
+  background-color: var(--background-color);
   justify-content: center;
-  height: 70vh;
+  align-items: center;
+  height: 100vh;
   width: 100vw;
-  padding: 20px;
-  flex-direction: row;
+  padding: 1.25rem;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
-.editor {
-  background-color: magenta;
-  border: 1px solid black;
-  margin: 1rem;
-  padding: 2rem 2rem;
-  text-align: center;
-  width:100%;
-  max-width: 800px; 
+.components {
+  display: flex;
+  flex-direction: row;
 }
 
-.code {
-  height: 60%;
-  width: 100%;
+.title {
+  display: flex;
+  color: white;
+  justify-content: center;
+  font-size: xx-large;
+  margin-bottom: 0.5rem;
+  padding: 0; 
+}
+
+.editor, .question {
+  height: 90vh;
+  width: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+}
+
+.editor {
+  display: flex;
+  color: white;
+  align-self: center;
+  background-color: var(--primary-color);
+  border: 0.03125rem solid black;
+  border-radius: 0.75rem;
+  margin: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  width:90%;
+  max-width: 62.5rem; 
 }
 
 .question {
+  align-self: center;
+  background-color: var(--primary-color);
   overflow-y: auto; 
-  background-color: cyan;
+  border-radius: 0.75rem;
+  color: white;
   border: 1px solid black;
   margin: 1rem;
   padding: 2rem 2rem;
-  width:100%;
-  max-width: 900px; 
+  width:90%;
+  max-width: 65.5rem; 
 }
 
 .textBox {
@@ -41,23 +78,71 @@
 }
 
 .button {
+  color: white;
+  width: auto;
+  min-width: 5rem; 
   display: flex;
   margin: 1rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: lightgray;
 }
 
 .container {
-  background-color: aliceblue;
-  width: 100%;  
-  max-width: 1500px;  
-  margin: 0 auto; 
-  padding: 20px;
+  flex: 1; 
+  height: 100%; 
+  width: 100%; 
+  max-width: 70rem; 
+  max-height: 90vh; 
+  background-color: rgb(34, 33, 33);
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  overflow-y: auto;
   box-sizing: border-box;
   overflow-wrap: break-word;  
   word-wrap: break-word;  
 }
 
+/* Style the scrollbar */
+.container::-webkit-scrollbar {
+  width: 8px; /* Width of the vertical scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
+}
+
+/* Style the track (part the scrollbar slides in) */
+.container::-webkit-scrollbar-track {
+  background: #2a2a2a; /* Dark background for the track */
+  border-radius: 10px;
+}
+
+/* Style the thumb (the draggable part of the scrollbar) */
+.container::-webkit-scrollbar-thumb {
+  background-color: #9b4d96; /* Purple thumb color */
+  border-radius: 10px;
+  border: 2px solid #2a2a2a; /* Border around the thumb */
+}
+
+/* Style the thumb when hovered */
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: #7e1f7a; /* Darker purple when hovered */
+}
+
+/* Optional: Style the corner where the horizontal and vertical scrollbars meet */
+.container::-webkit-scrollbar-corner {
+  background: #2a2a2a; /* Match the track background */
+}
+
+
 .react-markdown {
   word-wrap: break-word; 
   line-height: 1.5; 
   font-size: 1rem; 
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
 }

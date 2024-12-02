@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useGet = <T,>(query: string,mapFunction:(rawData: any) => T) => {
     // State variables to track data, loading status, errors
     const [data, setData] = useState<T | null>(null);
@@ -17,6 +18,7 @@ const useGet = <T,>(query: string,mapFunction:(rawData: any) => T) => {
                 setData(mapFunction(json)); // shape data to our model
 
                 setLoading(false); // set loading to false to indicate that api call has ended
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (error: any) {
                 setError(error.message);
                 setLoading(false); // set loading to false to indicate that the api call has ended
@@ -28,54 +30,3 @@ const useGet = <T,>(query: string,mapFunction:(rawData: any) => T) => {
 };
 
 export default useGet;
-
-// const fetchData = async (endpoint: string) => {
-//     try {
-//       const response = await fetch(BASE_API_URL + endpoint);
-//       const jsonData = await response.json();
-//       setData(jsonData.message);
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//     }
-//   };
-
-// const useFetch = (url: string, shouldFetch: boolean, options: RequestInit = {}) => {
-//     //State variables used to track the data, loading status, and errors
-//     const [data, setData] = useState<ApiResponse | null>(null);
-//     const [loading, setLoading] = useState<boolean>(true);
-//     const [error, setError] = useState<string | null>(null);
-
-//     //useEffect hook to handle the API call
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             if(!shouldFetch) return;
-
-//             try {
-//                 const response = await fetch(BASE_API_URL + url, {...options});
-
-//                 //Check if response is succesful
-//                 if (!response.ok) {
-//                     throw new Error(`HTTP error! status: ${response.status}`);
-//                 }
-
-//                 const result = await response.json();
-//                 setData(result); //Set the fetched data
-//             } catch (err) {
-//                 if (err instanceof Error) {
-//                     setError(err.message); //Handle Errors
-//                 } else {
-//                     setError("Unknown Error")
-//                 }
-                
-//             } finally {
-//                 setLoading(false);
-//                 }
-
-//             };
-//             fetchData(); //Call the function
-//     }, [url, options, shouldFetch]);
-
-//     return {data, loading, error};
-// };
-
-// export default useFetch;
