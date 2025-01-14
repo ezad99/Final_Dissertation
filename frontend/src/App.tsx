@@ -4,32 +4,16 @@ import { MantineProvider, Button, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
 
 import './App.css'
-import {CODE, DATA, TEXT, CODE_QUESTION} from '../config';
-import DataDisplay from './components/DataDisplay';
-import useGet from './hooks/useGet';
-import { GetDataModel,getMapData,PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
+import {CODE, TEXT, CODE_QUESTION} from '../config';
+import {PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
 import { usePost } from './hooks/usePost';
 import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
 import Collapsable from './components/Collapsable';
 
 function App() {
-
-  // Array representing all Button Types
-  const buttons = [
-    { key:1, text: "How To Write Code",  onClick: () => handleTextSubmit(1)},
-    { key:2, text: "General Question",  onClick: () => handleTextSubmit(2)},
-    { key:3, text: "How To Fix Code",  onClick: () => handleEditorContentSubmit(3)},
-  ];
-
-  // Fetch Data for SanityCheck
-  const {data, loading, error} = useGet<GetDataModel>(DATA, getMapData);
-
   // State to hold the current value in the textbox
   const [inputValue, setInputValue] =  useState<string>("");
-
-  // State to keep track of the value submitted by the user
-  const [submittedValue, setSubmittedValue] =  useState<string>("");
 
   const [lastSubmittedType, setLastSubmittedType] = useState<number | null>(null);
 
@@ -40,13 +24,13 @@ function App() {
   })
 
   // State to hold the question object for the API payload
-  const [code,setCode] = useState<PostCodePayloadModel>({
+  const [,setCode] = useState<PostCodePayloadModel>({
     question_type: 3,
     code: ""
   })
 
   // State to hold the question object for the API payload
-  const [codeQuestion,setCodeQuestion] = useState<PostCodePayloadModel>({
+  const [,setCodeQuestion] = useState<PostCodePayloadModel>({
     question_type: 4,
     code: ""
   })
@@ -72,8 +56,6 @@ function App() {
   // Takes `questionType` as an argument to set the type of question being asked.
   const handleTextSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
-    
-    setSubmittedValue(inputValue); // Save the current input value
     setInputValue('') // Clear the input field
     setQuestion({
       question_type: questionType,
@@ -98,7 +80,7 @@ function App() {
   const [editorContent, setEditorContent] = useState<string>("");
 
   // State to keep track of the code submitted by the user
-  const [submittedEditorContent, setSubmittedEditorContent] = useState<string>("");
+  const [,setSubmittedEditorContent] = useState<string>("");
   
   // Handles Code Editor Content Changes
   const handleEditorContentChange = (content: string | undefined) => {
@@ -159,7 +141,6 @@ function App() {
   const handleCodeQuestionSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
     console.log("Submitted code:", editorContent);
-    setSubmittedValue(inputValue); 
     setSubmittedEditorContent(editorContent);
     setInputValue('')
     setCodeQuestion({
@@ -220,7 +201,7 @@ function App() {
                 </Button>
             </Collapsable>
             <Collapsable header="How To Fix Code">
-            <p>Add your code you want to to be fixed into the code editor </p>
+            <p>Add your code you want to be fixed into the code editor </p>
                 <Button
                     key={3}
                     className="button"
