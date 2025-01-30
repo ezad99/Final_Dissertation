@@ -6,6 +6,7 @@ from .ai_integration import *
 
 app = FastAPI()
 
+# origins = ["https://gurujava.onrender.com/", "http://localhost:4173/"]
 origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
@@ -20,19 +21,23 @@ app.add_middleware(
 async def read_root():
     return {"content": "Hello World"}
 
+
 @app.get("/data")
 def read_data():
     return {"content": "Hello from the other Side"}
+
 
 @app.post("/text")
 async def post_text(payload: TextRequest):
     response = process_text_question(payload.question_type, payload.question)
     return {"content": response}
 
+
 @app.post("/code")
 async def post_code(payload: CodeRequest):
     response = process_text_question(payload.question_type, payload.code)
     return {"content": response}
+
 
 @app.post("/code-question")
 async def post_code_question(payload: CodeRequest):
