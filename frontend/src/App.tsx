@@ -166,6 +166,8 @@ function App() {
     <div className='app'>
       <h2 className='title'>GuruJava</h2>
         <div className='components'>
+          <p>Sanity Check</p>
+          {url}
           <div className="editor">
             <h2 >Code Editor</h2>
             {codeLoading && <p>Loading code response...</p>}
