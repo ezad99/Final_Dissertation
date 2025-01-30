@@ -20,17 +20,14 @@ app.add_middleware(
 async def read_root():
     return {"content": "Hello World"}
 
-
 @app.get("/data")
 def read_data():
     return {"content": "Hello from the other Side"}
-
 
 @app.post("/text")
 async def post_text(payload: TextRequest):
     response = process_text_question(payload.question_type, payload.question)
     return {"content": response}
-
 
 @app.post("/code")
 async def post_code(payload: CodeRequest):
