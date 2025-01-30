@@ -4,7 +4,7 @@ import { MantineProvider, Button, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
 
 import './App.css'
-import {CODE, TEXT, CODE_QUESTION} from '../config';
+import {CODE, TEXT, CODE_QUESTION, BASE_API_URL} from '../config';
 import {PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
 import { usePost } from './hooks/usePost';
 import ReactMarkdown from 'react-markdown';
@@ -166,9 +166,9 @@ function App() {
     <div className='app'>
       <h2 className='title'>GuruJava</h2>
         <div className='components'>
-          <p>Sanity Check</p>
-          {url}
           <div className="editor">
+          <p>Sanity Check</p>
+          {BASE_API_URL}
             <h2 >Code Editor</h2>
             {codeLoading && <p>Loading code response...</p>}
             {codeError && <p className='error'>An error occurred: {codeError}</p>}
