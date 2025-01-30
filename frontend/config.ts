@@ -1,4 +1,6 @@
-export const BASE_API_URL = import.meta.env.VITE_BACKEND_URL
+// export const BASE_API_URL = import.meta.env.VITE_BACKEND_URL
+
+export const BASE_API_URL = "https://gurujava.onrender.com"
 
 export const DATA = BASE_API_URL + "/data"
 
