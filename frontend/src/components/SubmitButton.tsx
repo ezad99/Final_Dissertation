@@ -8,7 +8,7 @@ const SubmitButton = ({ onClick }: { onClick: () => void }) => {
       variant="filled"
       color="rgb(145, 0, 207)"
       radius="md"
-      size="2md"
+      size="xs"
       onClick={onClick}
     >
       Submit

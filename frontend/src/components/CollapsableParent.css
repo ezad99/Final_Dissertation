@@ -6,6 +6,7 @@
 
 .header {
     display: flex;
+    min-width: 10rem;
     width: auto;
     height: 2rem;
     background-color: rgb(145, 0, 207);
@@ -20,11 +21,13 @@
 }
 
 .rounded-t {
+    padding: auto;
     border-bottom-left-radius: 0; 
     border-bottom-right-radius: 0;
 }
 
 .rounded-full {
+    padding: auto;
     border-radius: 0.75rem; 
 }
 
