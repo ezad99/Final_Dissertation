@@ -22,8 +22,8 @@ body {
 }
 
 .components {
-  height: 90%;
-  width: 70%;
+  height: 95%;
+  width: 80%;
   display: flex;
   flex-direction: row;
 }

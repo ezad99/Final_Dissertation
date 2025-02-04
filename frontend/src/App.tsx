@@ -10,6 +10,8 @@ import { usePost } from './hooks/usePost';
 import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
 import Collapsable from './components/Collapsable';
+import SubmitButton from './components/SubmitButton';
+import CollapsableParent from './components/CollapsableParent';
 
 function App() {
   // State to hold the current value in the textbox
@@ -174,61 +176,32 @@ function App() {
             {codeError && <p className='error'>An error occurred: {codeError}</p>}
             <CodeEditor value={editorContent} onChange={handleEditorContentChange}/>
           </div>
+
           <div className='question'>
+          <CollapsableParent header="Questions">
             <Collapsable header="How To Write Code">
-            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-                <Button
-                    key={1}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() => handleTextSubmit(1)}>
-                    {"Submit"}
-                </Button>
+              <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <SubmitButton onClick={() => handleTextSubmit(1)} />
             </Collapsable>
+
             <Collapsable header="General Question">
-            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-                <Button
-                    key={2}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() => handleTextSubmit(2)}>
-                    {"Submit"}
-                </Button>
+              <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <SubmitButton onClick={() => handleTextSubmit(2)} />
             </Collapsable>
+
             <Collapsable header="How To Fix Code">
-            <p>Add your code you want to be fixed into the code editor </p>
-                <Button
-                    key={3}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() =>  handleEditorContentSubmit(3)}>
-                    {"Submit"}
-                </Button>
+              <p>Add your code you want to be fixed into the code editor</p>
+              <SubmitButton onClick={() => handleEditorContentSubmit(3)} />
             </Collapsable>
+
             <Collapsable header="Question From Code">
-            <p>Ask Question from the Code in the Code Editor </p>
-            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-                <Button
-                    key={4}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() =>  handleCodeQuestionSubmit(4)}>
-                    {"Submit"}
-                </Button>
+              <p>Ask a question for the Code in the Code Editor</p>
+              <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <SubmitButton onClick={() => handleCodeQuestionSubmit(4)} />
             </Collapsable>
-            <h2>Output</h2>
+          </CollapsableParent>
+
+          <h2>Output</h2>
               <Container className="container">
                   {/* Render text response if available and it was the last submission */}
                   {textLoading && <p>Loading text response...</p>}

@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ["gurujava-frontend.onrender.com"],
+    allowedHosts: ["gurujava-frontend.onrender.com","http://localhost:4173/"],
     host: '0.0.0.0',
-    port: 4173,
+    port: 5173,
   }
 })
