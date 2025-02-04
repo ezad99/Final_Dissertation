@@ -1,15 +1,17 @@
 import {useState, useEffect } from 'react'
 import '@mantine/core/styles.css';
-import { MantineProvider, Button, Container} from '@mantine/core';
+import { MantineProvider, Container} from '@mantine/core';
 import TextBox from './components/TextBox';
 
 import './App.css'
-import {CODE, TEXT, CODE_QUESTION, BASE_API_URL} from '../config';
+import {CODE, TEXT, CODE_QUESTION} from '../config';
 import {PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
 import { usePost } from './hooks/usePost';
 import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
 import Collapsable from './components/Collapsable';
+import SubmitButton from './components/SubmitButton';
+// import CollapsableParent from './components/CollapsableParent';
 
 function App() {
   // State to hold the current value in the textbox
@@ -45,12 +47,40 @@ function App() {
   // State to determine whether to display as text or as code
   const [displayInEditor, setDisplayInEditor] = useState<boolean>(false);
 
+  // State to keep track of Code Editor Content
+  const [editorContent, setEditorContent] = useState<string>("");
+
+  // State to keep track of the code submitted by the user
+  const [,setSubmittedEditorContent] = useState<string>("");
+  
+  // Handles Code Editor Content Changes
+  const handleEditorContentChange = (content: string | undefined) => {
+    setEditorContent(content ?? "")
+    console.log("Editor content update: ", content)
+  }
+
   // POST data from text 
   // TEXT is the endpoint URL
   // `postText` triggers the post request
   const {responseData: textData, loading: textLoading, error: textError, post: postText} 
   = usePost<PostTextPayloadModel, PostTextResponseModel>(TEXT,
   {"Content-Type": "application/json"})
+
+  // POST data from code
+  // CODE is the endpoint URL
+  // 'postCode' triggers the post request
+  const {responseData: codeData, loading: codeLoading, error: codeError, post: postCode}
+  = usePost<PostCodePayloadModel, PostCodeResponseModel>(CODE,
+    {"Content-Type": "application/json"}
+  )
+
+  // POST data from code
+  // CODE_QUESTION is the endpoint URL
+  // 'postCodeQuestion' triggers the post request
+  const {responseData: codeQuestionData, loading: codeQuestionLoading, error: codeQuestionError, post: postCodeQuestion}
+  = usePost<PostCodePayloadModel, PostCodeResponseModel>(CODE_QUESTION,
+    {"Content-Type": "application/json"}
+  )
 
   // Handles form submission when a button is clicked
   // Takes `questionType` as an argument to set the type of question being asked.
@@ -71,30 +101,10 @@ function App() {
       question: inputValue
     })
 
-    setLastSubmittedType(1)
+    setLastSubmittedType(questionType)
 
     console.log('Received response:', textData);
   }
-
-  // State to keep track of Code Editor Content
-  const [editorContent, setEditorContent] = useState<string>("");
-
-  // State to keep track of the code submitted by the user
-  const [,setSubmittedEditorContent] = useState<string>("");
-  
-  // Handles Code Editor Content Changes
-  const handleEditorContentChange = (content: string | undefined) => {
-    setEditorContent(content ?? "")
-    console.log("Editor content update: ", content)
-  }
-
-  // POST data from code
-  // CODE is the endpoint URL
-  // 'postCode' triggers the post request
-  const {responseData: codeData, loading: codeLoading, error: codeError, post: postCode}
-  = usePost<PostCodePayloadModel, PostCodeResponseModel>(CODE,
-    {"Content-Type": "application/json"}
-  )
 
   // Handle Code submission
   const handleEditorContentSubmit = async(questionType: number) => {
@@ -119,23 +129,10 @@ function App() {
       setEditorContent(codeData.content.content); 
     }
 
+    setLastSubmittedType(questionType)
+
     console.log('Received response:', codeData)
   }
-
-  // Effect hook to handle updates to codeData
-  useEffect(() => {
-    if (displayInEditor && codeData && codeData.content && codeData.content.content) {
-      setEditorContent(codeData.content.content);
-    }
-  }, [codeData, displayInEditor]); // This effect runs whenever textData changes
-
-  // POST data from code
-  // CODE is the endpoint URL
-  // 'postCodeQuestion' triggers the post request
-  const {responseData: codeQuestionData, loading: codeQuestionLoading, error: codeQuestionError, post: postCodeQuestion}
-  = usePost<PostCodePayloadModel, PostCodeResponseModel>(CODE_QUESTION,
-    {"Content-Type": "application/json"}
-  )
 
   // Handle Code submission
   const handleCodeQuestionSubmit = async(questionType: number) => {
@@ -155,81 +152,56 @@ function App() {
       code: inputValue + editorContent
     })
 
-    setLastSubmittedType(4)
+    setLastSubmittedType(questionType)
 
     console.log('Received response:', codeQuestionData)
   }
 
+    // Effect hook to handle updates to codeData
+    useEffect(() => {
+      if (displayInEditor && codeData && codeData.content && codeData.content.content) {
+        setEditorContent(codeData.content.content);
+      }
+    }, [codeData, displayInEditor]); // This effect runs whenever textData changes
 
+    
   return (
     <MantineProvider> 
     <div className='app'>
       <h2 className='title'>GuruJava</h2>
         <div className='components'>
           <div className="editor">
-          <p>Sanity Check</p>
-          {BASE_API_URL}
-            <h2 >Code Editor</h2>
+            <h2 className='titleHeader'>Code Editor</h2>
             {codeLoading && <p>Loading code response...</p>}
             {codeError && <p className='error'>An error occurred: {codeError}</p>}
             <CodeEditor value={editorContent} onChange={handleEditorContentChange}/>
           </div>
+
           <div className='question'>
-            {/* <DataDisplay data={data} loading={loading} error={error}/> */}
+          {/* <CollapsableParent header="Questions"> */}
             <Collapsable header="How To Write Code">
-            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-                <Button
-                    key={1}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() => handleTextSubmit(1)}>
-                    {"Submit"}
-                </Button>
+              <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <SubmitButton onClick={() => handleTextSubmit(1)} />
             </Collapsable>
+
             <Collapsable header="General Question">
-            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-                <Button
-                    key={2}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() => handleTextSubmit(2)}>
-                    {"Submit"}
-                </Button>
+              <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <SubmitButton onClick={() => handleTextSubmit(2)} />
             </Collapsable>
+
             <Collapsable header="How To Fix Code">
-            <p>Add your code you want to be fixed into the code editor </p>
-                <Button
-                    key={3}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() =>  handleEditorContentSubmit(3)}>
-                    {"Submit"}
-                </Button>
+              <p className='questionText'>Add your code you want to be fixed into the code editor</p>
+              <SubmitButton onClick={() => handleEditorContentSubmit(3)} />
             </Collapsable>
+
             <Collapsable header="Question From Code">
-            <p>Ask Question from the Code in the Code Editor </p>
-            <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
-                <Button
-                    key={4}
-                    className="button"
-                    variant="filled"
-                    color="rgb(145, 0, 207)"
-                    radius="md"
-                    size="md"
-                    onClick={() =>  handleCodeQuestionSubmit(4)}>
-                    {"Submit"}
-                </Button>
+              <p className='questionText'>Ask a question for the Code in the Code Editor</p>
+              <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <SubmitButton onClick={() => handleCodeQuestionSubmit(4)} />
             </Collapsable>
-            <h2>Output</h2>
+          {/* </CollapsableParent> */}
+
+          <h2 className='titleHeader'>Output</h2>
               <Container className="container">
                   {/* Render text response if available and it was the last submission */}
                   {textLoading && <p>Loading text response...</p>}
@@ -238,7 +210,12 @@ function App() {
                   {codeQuestionLoading && <p>Loading code question response...</p>}
                   {codeQuestionError && <p className='error'>An error occurred: {codeQuestionError}</p>}
                   
-                  {lastSubmittedType === 1 && textData && (
+                  {lastSubmittedType === 1  && textData && (
+                      <ReactMarkdown className="react-markdown">
+                          {textData.content.content}
+                      </ReactMarkdown>
+                  )}
+                  {lastSubmittedType === 2  && textData && (
                       <ReactMarkdown className="react-markdown">
                           {textData.content.content}
                       </ReactMarkdown>

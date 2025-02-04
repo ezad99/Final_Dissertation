@@ -17,8 +17,7 @@ function TextBox({className, onChange, input}: TextBoxProps) {
       <TextInput
         value={input}
         variant="filled"
-        size="md"
-        // error="Invalid Input"
+        size="xs"
         placeholder="Input Question"
         onChange={handleChange}
       />
