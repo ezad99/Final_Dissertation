@@ -16,6 +16,11 @@ const CodeEditor = ({value, onChange}: {value: string | undefined; onChange: (va
     return (
         <>
             <Editor
+                options={{
+                    minimap: {
+                    enabled: false,
+                    },
+                }}
                 height="80vh"
                 theme="vs-dark"
                 defaultLanguage="java"
