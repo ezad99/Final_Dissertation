@@ -7,7 +7,6 @@ import './App.css'
 import {CODE, TEXT, CODE_QUESTION} from '../config';
 import {PostCodePayloadModel,PostCodeResponseModel,PostTextPayloadModel, PostTextResponseModel } from './models/apiModels';
 import { usePost } from './hooks/usePost';
-import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
 import Collapsable from './components/Collapsable';
 import SubmitButton from './components/SubmitButton';
