@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import CodeEditor from './components/CodeEditor';
 import Collapsable from './components/Collapsable';
 import SubmitButton from './components/SubmitButton';
+import MarkdownRenderer from './components/MarkdownRenderer';
 // import CollapsableParent from './components/CollapsableParent';
 
 function App() {
@@ -178,7 +179,6 @@ function App() {
           </div>
 
           <div className='question'>
-          {/* <CollapsableParent header="Questions"> */}
             <Collapsable header="How To Write Code">
               <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
               <SubmitButton onClick={() => handleTextSubmit(1)} />
@@ -199,8 +199,6 @@ function App() {
               <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
               <SubmitButton onClick={() => handleCodeQuestionSubmit(4)} />
             </Collapsable>
-          {/* </CollapsableParent> */}
-
           <h2 className='titleHeader'>Output</h2>
               <Container className="container">
                   {/* Render text response if available and it was the last submission */}
@@ -210,7 +208,7 @@ function App() {
                   {codeQuestionLoading && <p>Loading code question response...</p>}
                   {codeQuestionError && <p className='error'>An error occurred: {codeQuestionError}</p>}
                   
-                  {lastSubmittedType === 1  && textData && (
+                  {/* {lastSubmittedType === 1  && textData && (
                       <ReactMarkdown className="react-markdown">
                           {textData.content.content}
                       </ReactMarkdown>
@@ -224,6 +222,17 @@ function App() {
                       <ReactMarkdown className="react-markdown">
                           {codeQuestionData.content.content}
                       </ReactMarkdown>
+                  )} */}
+                  {lastSubmittedType === 1 && textData && (
+                    <MarkdownRenderer content={textData.content.content} />
+                  )}
+
+                  {lastSubmittedType === 2 && textData && (
+                    <MarkdownRenderer content={textData.content.content} />
+                  )}
+
+                  {lastSubmittedType === 4 && codeQuestionData && (
+                    <MarkdownRenderer content={codeQuestionData.content.content} />
                   )}
             </Container>
           </div>
@@ -234,5 +243,4 @@ function App() {
 }
 
 export default App;
-
 
