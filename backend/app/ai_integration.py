@@ -37,7 +37,7 @@ def process_text_question(question_type: int, question: str) -> str:
         frequency_penalty=0,
         presence_penalty=0,
         response_format={
-            "type": "json"
+            "type": "text"
         }
     )
 
