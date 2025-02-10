@@ -6,14 +6,17 @@ from .ai_integration import *
 
 app = FastAPI()
 
-# origins = ["https://gurujava.onrender.com/", "http://localhost:4173/"]
-origins = ["*"]
+origins = [
+    "https://gurujava-frontend.onrender.com", 
+    "http://localhost:4173"
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 
