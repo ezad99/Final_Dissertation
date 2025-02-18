@@ -1,7 +1,11 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",  // This enables JSX support in TypeScript files
+    "esModuleInterop": true,  // This resolves the import issue
+    "strict": true,  // This enables strict type checking
+    "skipLibCheck": true  // Skips checking of declaration files
+  }
 }

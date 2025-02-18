@@ -22,7 +22,7 @@ const Collapsable: React.FC<CollapsableProps> = ({header, children}) => {
                 />
             </div>
             <div className={`footer ${collapsed ? 'collapsed' : ''}`}>
-                <p className="font-bold">{children}</p>
+               <div className="content-wrapper">{children}</div>
             </div>
         </div>
     );
