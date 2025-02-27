@@ -206,22 +206,7 @@ function App() {
                   {/* Render code question response if available and it was the last submission */}
                   {codeQuestionLoading && <p>Loading code question response...</p>}
                   {codeQuestionError && <p className='error'>An error occurred: {codeQuestionError}</p>}
-                  
-                  {/* {lastSubmittedType === 1  && textData && (
-                      <ReactMarkdown className="react-markdown">
-                          {textData.content.content}
-                      </ReactMarkdown>
-                  )}
-                  {lastSubmittedType === 2  && textData && (
-                      <ReactMarkdown className="react-markdown">
-                          {textData.content.content}
-                      </ReactMarkdown>
-                  )}
-                  {lastSubmittedType === 4 && codeQuestionData && (
-                      <ReactMarkdown className="react-markdown">
-                          {codeQuestionData.content.content}
-                      </ReactMarkdown>
-                  )} */}
+
                   {lastSubmittedType === 1 && textData && (
                     <MarkdownRenderer content={textData.content.content} />
                   )}
