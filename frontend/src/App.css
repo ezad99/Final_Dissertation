@@ -110,35 +110,29 @@ body {
   word-wrap: break-word;  
 }
 
-/* Style the scrollbar */
 .container::-webkit-scrollbar {
-  width: 8px; /* Width of the vertical scrollbar */
-  height: 8px; /* Height of the horizontal scrollbar */
+  width: 8px; 
+  height: 8px; 
 }
 
-/* Style the track (part the scrollbar slides in) */
 .container::-webkit-scrollbar-track {
-  background: #2a2a2a; /* Dark background for the track */
+  background: #2a2a2a; 
   border-radius: 10px;
 }
 
-/* Style the thumb (the draggable part of the scrollbar) */
 .container::-webkit-scrollbar-thumb {
-  background-color: #9b4d96; /* Purple thumb color */
+  background-color: #9b4d96; 
   border-radius: 10px;
-  border: 2px solid #2a2a2a; /* Border around the thumb */
+  border: 2px solid #2a2a2a; 
 }
 
-/* Style the thumb when hovered */
 .container::-webkit-scrollbar-thumb:hover {
-  background-color: #7e1f7a; /* Darker purple when hovered */
+  background-color: #7e1f7a; 
 }
 
-/* Optional: Style the corner where the horizontal and vertical scrollbars meet */
 .container::-webkit-scrollbar-corner {
-  background: #2a2a2a; /* Match the track background */
+  background: #2a2a2a; 
 }
-
 
 .react-markdown {
   word-wrap: break-word; 
@@ -155,4 +149,52 @@ body {
   display: flex;
   margin: auto;
   justify-content: center;
+}
+
+.code-buttons {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 100%; 
+}
+
+.code-navigation {
+  display: flex;
+  gap: 10px; 
+}
+
+.clear-btn {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto; 
+}
+
+.clear-btn:hover {
+  background-color: darkred;
+}
+
+.text-response-navigation {
+  margin-top: 5px;
+  display: flex;
+  gap: 10px;
+}
+
+.navigational-button {
+  background-color: rgb(145, 0, 207);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.navigational-button:hover {
+  background-color: rgb(120, 0, 175);
 }
