@@ -101,8 +101,8 @@ body {
   max-width: 70rem; 
   max-height: 90vh; 
   background-color: rgb(34, 33, 33);
-  margin-top: 1rem;
-  padding: 1rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
   border-radius: 0.75rem;
   overflow-y: auto;
   box-sizing: border-box;
@@ -145,10 +145,22 @@ body {
   flex-direction: column;
 }
 
-.titleHeader {
+.code-editor-header, .output-header {
   display: flex;
-  margin: auto;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.loading, .error {
+  flex-grow: 1; 
+  text-align: right; 
+}
+
+.title-header {
+  margin-left: auto;
+  flex-grow: 1;
+  text-align: left; 
 }
 
 .code-buttons {

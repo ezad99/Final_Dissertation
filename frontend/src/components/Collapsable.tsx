@@ -5,16 +5,25 @@ import React, { useState } from 'react';
 interface CollapsableProps {
     header: string;
     children: React.ReactNode;
+    onToggle?: (isOpen: boolean) => void;
 }
 
-const Collapsable: React.FC<CollapsableProps> = ({header, children}) => {
+const Collapsable: React.FC<CollapsableProps> = ({ header, children, onToggle }) => {
     const [collapsed, setCollapsed] = useState(true);
+
+    const handleToggle = () => {
+        const newState = !collapsed;
+        setCollapsed(newState);
+        if (onToggle) {
+            onToggle(!collapsed);
+        }
+    };
 
     return (
         <div className='collapsable-container'>
             <div
                 className={`header ${collapsed ? 'rounded-full' : 'rounded-t'}`}
-                onClick={() => setCollapsed(!collapsed)}
+                onClick={handleToggle}
             >
                 <p className="font-bold">{header}</p>
                 <MdOutlineArrowBackIosNew
