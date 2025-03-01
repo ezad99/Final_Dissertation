@@ -135,18 +135,6 @@ function App() {
 
     console.log("API request sent for:", questionType);
   
-    // // Handle API response when available
-    // if (codeData && codeData.content && codeData.content.content) {
-    //   setEditorContent(codeData.content.content); // Update editor with new code
-  
-    //   setCodeResponseHistory((prev) => {
-    //     const newHistory = [...prev, codeData.content.content];
-    //     return newHistory;
-    //   });
-  
-    //   setCurrentCodeResponseIndex((prev) => (prev === null ? 0 : prev + 1));
-    // }
-  
     setLastSubmittedType(questionType);
     console.log("Received response:", codeData);
   };
