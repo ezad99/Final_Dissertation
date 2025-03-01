@@ -54,9 +54,6 @@ function App() {
   // State to keep track of the code submitted by the user
   const [,setSubmittedEditorContent] = useState<string>("");
 
-  // State to track if the "How To Fix Code" section is open
-  const [isFixCodeOpen, setIsFixCodeOpen] = useState<boolean>(false);
-
   // Handles changes in the text box input
   // - Updates the `inputValue` 
   const handleTextBoxChange = (value: string) => {
@@ -96,13 +93,12 @@ function App() {
   // Handles Form Submission
   const handleTextSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
-    setInputValue('') // Clear the input field
+    setInputValue('')
+
     setQuestion({
       question_type: questionType,
       question: inputValue
     })
-
-    console.log(question);
 
     setDisplayInEditor(false);
 
@@ -143,12 +139,14 @@ function App() {
   };
   
 
-  // Handle Code Submission
+  // Handle Code Question Submission
   const handleCodeQuestionSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
     console.log("Submitted code:", editorContent);
+
     setSubmittedEditorContent(editorContent);
     setInputValue('')
+
     setCodeQuestion({
       question_type: questionType,
       code: inputValue + editorContent
@@ -161,10 +159,17 @@ function App() {
       code: inputValue + editorContent
     })
 
+    console.log("API request sent");
+
+    if (codeQuestionData) {
+      setTextResponseHistory((prev) => [...prev, codeQuestionData.content.content]);
+      setCurrentTextResponseIndex(textResponseHistory.length);
+
     setLastSubmittedType(questionType)
 
     console.log('Received response:', codeQuestionData)
-  }
+    }
+  };
 
   // Navigational Handlers
   const handlePreviousTextResponse = () => {
@@ -196,13 +201,13 @@ function App() {
   // Handles Clearing Code Editor Code
   const handleClearEditor = () => {
     setEditorContent("");
-     setSubmittedEditorContent("");
+    setSubmittedEditorContent("");
   };
   
   // Effect hook to handle updates to codeData
   useEffect(() => {
     if (codeData && codeData.content && codeData.content.content) {
-      setEditorContent(codeData.content.content); // ✅ Update editor with API response
+      setEditorContent(codeData.content.content);
   
       // Save to history ONLY when a new response comes in
       setCodeResponseHistory((prev) => {
@@ -223,35 +228,23 @@ function App() {
   useEffect(() => {
     if (textData && textData.content && textData.content.content) {
       setTextResponseHistory((prev) => [...prev, textData.content.content]);
-      setCurrentTextResponseIndex((prev) => textResponseHistory.length);
+      setCurrentTextResponseIndex(textResponseHistory.length);
     }
   }, [textData]);
+
+  useEffect(() => {
+    if (codeQuestionData && codeQuestionData.content && codeQuestionData.content.content) {
+      setTextResponseHistory((prev) => [...prev, codeQuestionData.content.content]);
+      setCurrentTextResponseIndex(textResponseHistory.length);
+    }
+  }, [codeQuestionData]);
+  
 
   useEffect(() => {
     if (codeResponseHistory.length > 0) {
       setCurrentCodeResponseIndex(codeResponseHistory.length - 1);
     }
   }, [codeResponseHistory]);
-
-  // Effect Hook to handle key press globally when the collapsible is open
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (isFixCodeOpen && event.key === 'Enter') {
-        event.preventDefault(); // Prevent unintended behaviors (optional)
-        handleEditorContentSubmit(3); // Trigger the submit function
-      }
-    };
-
-    if (isFixCodeOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-    } else {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isFixCodeOpen]); // Re-run when the collapsible state changes
 
   return (
     <MantineProvider> 
