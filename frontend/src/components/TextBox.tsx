@@ -1,15 +1,22 @@
 import { TextInput } from '@mantine/core';
 
 interface TextBoxProps {
-    className: string
-    onChange: (value: string) => void
-    input: string
+    className: string;
+    onChange: (value: string) => void;
+    input: string;
+    onEnterPress?: () => void; 
 }
 
-function TextBox({className, onChange, input}: TextBoxProps) {
+function TextBox({ className, onChange, input, onEnterPress }: TextBoxProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.currentTarget.value;
-    onChange(newValue);
+    onChange(event.currentTarget.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && onEnterPress) {
+      event.preventDefault();
+      onEnterPress();
+    }
   };
 
   return (
@@ -20,6 +27,7 @@ function TextBox({className, onChange, input}: TextBoxProps) {
         size="xs"
         placeholder="Input Question"
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
     </div>
   );

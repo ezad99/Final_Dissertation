@@ -93,13 +93,12 @@ function App() {
   // Handles Form Submission
   const handleTextSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
-    setInputValue('') // Clear the input field
+    setInputValue('')
+
     setQuestion({
       question_type: questionType,
       question: inputValue
     })
-
-    console.log(question);
 
     setDisplayInEditor(false);
 
@@ -135,29 +134,19 @@ function App() {
 
     console.log("API request sent for:", questionType);
   
-    // // Handle API response when available
-    // if (codeData && codeData.content && codeData.content.content) {
-    //   setEditorContent(codeData.content.content); // Update editor with new code
-  
-    //   setCodeResponseHistory((prev) => {
-    //     const newHistory = [...prev, codeData.content.content];
-    //     return newHistory;
-    //   });
-  
-    //   setCurrentCodeResponseIndex((prev) => (prev === null ? 0 : prev + 1));
-    // }
-  
     setLastSubmittedType(questionType);
     console.log("Received response:", codeData);
   };
   
 
-  // Handle Code Submission
+  // Handle Code Question Submission
   const handleCodeQuestionSubmit = async(questionType: number) => {
     console.log("Submitting value:", inputValue);
     console.log("Submitted code:", editorContent);
+
     setSubmittedEditorContent(editorContent);
     setInputValue('')
+
     setCodeQuestion({
       question_type: questionType,
       code: inputValue + editorContent
@@ -170,11 +159,19 @@ function App() {
       code: inputValue + editorContent
     })
 
+    console.log("API request sent");
+
+    if (codeQuestionData) {
+      setTextResponseHistory((prev) => [...prev, codeQuestionData.content.content]);
+      setCurrentTextResponseIndex(textResponseHistory.length);
+
     setLastSubmittedType(questionType)
 
     console.log('Received response:', codeQuestionData)
-  }
+    }
+  };
 
+  // Navigational Handlers
   const handlePreviousTextResponse = () => {
     if (currentTextResponseIndex !== null && currentTextResponseIndex > 0) {
       setCurrentTextResponseIndex((prev) => (prev as number) - 1);
@@ -200,12 +197,17 @@ function App() {
       setEditorContent(codeResponseHistory[currentCodeResponseIndex + 1]);
     }
   };
-  
 
+  // Handles Clearing Code Editor Code
+  const handleClearEditor = () => {
+    setEditorContent("");
+    setSubmittedEditorContent("");
+  };
+  
   // Effect hook to handle updates to codeData
   useEffect(() => {
     if (codeData && codeData.content && codeData.content.content) {
-      setEditorContent(codeData.content.content); // ✅ Update editor with API response
+      setEditorContent(codeData.content.content);
   
       // Save to history ONLY when a new response comes in
       setCodeResponseHistory((prev) => {
@@ -220,24 +222,29 @@ function App() {
       );
     }
   }, [codeData]);
-  
+
+
+  // Effect hook to handle response history
   useEffect(() => {
     if (textData && textData.content && textData.content.content) {
       setTextResponseHistory((prev) => [...prev, textData.content.content]);
-      setCurrentTextResponseIndex((prev) => textResponseHistory.length);
+      setCurrentTextResponseIndex(textResponseHistory.length);
     }
   }, [textData]);
+
+  useEffect(() => {
+    if (codeQuestionData && codeQuestionData.content && codeQuestionData.content.content) {
+      setTextResponseHistory((prev) => [...prev, codeQuestionData.content.content]);
+      setCurrentTextResponseIndex(textResponseHistory.length);
+    }
+  }, [codeQuestionData]);
+  
 
   useEffect(() => {
     if (codeResponseHistory.length > 0) {
       setCurrentCodeResponseIndex(codeResponseHistory.length - 1);
     }
   }, [codeResponseHistory]);
-  
-  const handleClearEditor = () => {
-    setEditorContent("");
-     setSubmittedEditorContent("");
-  };
 
   return (
     <MantineProvider> 
@@ -247,16 +254,17 @@ function App() {
         {/* Code Editor Section */}
         <div className='components'>
           <div className="editor">
-            <h2 className="titleHeader">Code Editor</h2>
-            {codeLoading && <p>Loading code response...</p>}
-            {codeError && <p className="error">An error occurred: {codeError}</p>}
+            <div className='code-editor-header'>
+              <h2 className="title-header">Code Editor</h2>
+              {codeLoading && <p className='loading'>Loading code response...</p>}
+              {codeError && <p className="error">An error occurred: {codeError}</p>}
+            </div>
             <CodeEditor value={editorContent} onChange={handleEditorContentChange}/>
           <div className='code-buttons'> 
               <div className="code-navigation">
                 <button className="navigational-button" onClick={handlePreviousCodeResponse} disabled={currentCodeResponseIndex === 0}>← Previous Code</button>
                 <button className="navigational-button" onClick={handleNextCodeResponse} disabled={currentCodeResponseIndex === codeResponseHistory.length - 1}>Next Code →</button>
               </div>
-
               <button className="clear-btn" onClick={handleClearEditor}>Clear Editor</button>
             </div>
           </div>
@@ -265,12 +273,20 @@ function App() {
           <div className='question'>
             <div>
               <Collapsable header="How To Write Code">
-                <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+                <TextBox className='how-to-write-code-textbox' 
+                         onChange={handleTextBoxChange} 
+                         input={inputValue}
+                         onEnterPress={() => handleTextSubmit(1)} 
+                />
                 <SubmitButton onClick={() => handleTextSubmit(1)} />
               </Collapsable>
 
               <Collapsable header="General Question">
-                <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <TextBox className='general-question-textbox' 
+                         onChange={handleTextBoxChange} 
+                         input={inputValue}
+                         onEnterPress={() => handleTextSubmit(2)} 
+                />
                 <SubmitButton onClick={() => handleTextSubmit(2)} />
               </Collapsable>
 
@@ -281,21 +297,27 @@ function App() {
 
               <Collapsable header="Question From Code">
                 <p className='questionText'>Ask a question for the Code in the Code Editor</p>
-                <TextBox className='textBox' onChange={handleTextBoxChange} input={inputValue} />
+              <TextBox className='question-from-code-textbox' 
+                         onChange={handleTextBoxChange} 
+                         input={inputValue}
+                         onEnterPress={() => handleCodeQuestionSubmit(4)} 
+                />
                 <SubmitButton onClick={() => handleCodeQuestionSubmit(4)} />
               </Collapsable>
             </div>
           
             {/* Output Section */}
-            <h2 className='titleHeader'>Output</h2>
-            <Container className="container">
-                {/* Render text response if available and it was the last submission */}
-                {textLoading && <p>Loading text response...</p>}
-                {textError && <p className='error'>An error occurred: {textError}</p>}
-                {/* Render code question response if available and it was the last submission */}
-                {codeQuestionLoading && <p>Loading code question response...</p>}
-                {codeQuestionError && <p className='error'>An error occurred: {codeQuestionError}</p>}
+            <div className='output-header'> 
+              <h2 className='title-header'>Output</h2>
+              {/* Render text response if available and it was the last submission */}
+              {textLoading && <p className='loading'>Loading text response...</p>}
+              {textError && <p className='error'>An error occurred: {textError}</p>}
+              {/* Render code question response if available and it was the last submission */}
+              {codeQuestionLoading && <p className='loading'>Loading code question response...</p>}
+              {codeQuestionError && <p className='error'>An error occurred: {codeQuestionError}</p>}
+            </div>
 
+            <Container className="container">
                 {textResponseHistory.length > 0 && currentTextResponseIndex !== null ? (
                     <MarkdownRenderer content={textResponseHistory[currentTextResponseIndex]} />
                 ) : (
