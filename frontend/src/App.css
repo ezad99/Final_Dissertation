@@ -21,14 +21,6 @@ body {
   box-sizing: border-box;
 }
 
-.components {
-  height: 95%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-}
-
 .title {
   display: flex;
   color: white;
@@ -38,10 +30,20 @@ body {
   padding: 0.5rem; 
 }
 
-.editor, .question {
+.components {
   height: 90vh;
   width: 100vw;
   display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+
+.editor, .question {
+  height: 90vh;
+  width: 95vw;
+  display: flex;
+  flex: 1;
   flex-direction: column;
   overflow-y: hidden;
 }
@@ -51,12 +53,11 @@ body {
   color: white;
   align-self: center;
   background-color: var(--primary-color);
-  border: 0.03125rem solid black;
+  border: 1px solid black;
   border-radius: 0.75rem;
   margin: 0.5rem;
   padding: 1rem;
   text-align: center;
-  width:90%;
   max-width: 62.5rem; 
 }
 
@@ -74,32 +75,12 @@ body {
   max-width: 62.5rem; 
 }
 
-.textBox {
-  border: 1px solid black;
-  margin: 1rem;
-  width:100%;
-  max-width: 250px; 
-}
-
-.button {
-  color: white;
-  width: auto;
-  min-width: 5rem; 
-  display: flex;
-  margin: 1rem;
-  cursor: pointer;
-}
-
-.button:hover {
-  color: lightgray;
-}
-
 .container {
   flex: 1; 
   height: 100%; 
   width: 100%; 
   max-width: 70rem; 
-  max-height: 90vh; 
+  max-height: 70vh; 
   background-color: rgb(34, 33, 33);
   margin-top: 0.5rem;
   padding: 0.5rem;
@@ -134,6 +115,26 @@ body {
   background: #2a2a2a; 
 }
 
+.textBox {
+  border: 1px solid black;
+  margin: 1rem;
+  width:100%;
+  max-width: 250px; 
+}
+
+.button {
+  color: white;
+  width: auto;
+  min-width: 5rem; 
+  display: flex;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: lightgray;
+}
+
 .react-markdown {
   word-wrap: break-word; 
   line-height: 1.5; 
@@ -158,18 +159,32 @@ body {
 }
 
 .title-header {
+  padding: auto;
   margin-left: auto;
   flex-grow: 1;
   text-align: left; 
 }
 
+.navigational-button {
+  margin-top: 0.5rem;
+  background-color: rgb(145, 0, 207);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
 .code-buttons {
-  margin-top: 5px;
+  margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center; 
   width: 100%; 
 }
+
 
 .code-navigation {
   display: flex;
@@ -194,17 +209,6 @@ body {
   margin-top: 5px;
   display: flex;
   gap: 10px;
-}
-
-.navigational-button {
-  background-color: rgb(145, 0, 207);
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
 }
 
 .navigational-button:hover {
