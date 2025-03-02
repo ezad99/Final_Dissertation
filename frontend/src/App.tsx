@@ -13,8 +13,11 @@ import SubmitButton from './components/SubmitButton';
 import MarkdownRenderer from './components/MarkdownRenderer';
 
 function App() {
-  // State to hold the current value in the textbox
-  const [inputValue, setInputValue] =  useState<string>("");
+  // State to hold the current values in the textbox
+  const [howToWriteCodeInput, setHowToWriteCodeInput] = useState<string>("");
+  const [generalQuestionInput, setGeneralQuestionInput] = useState<string>("");
+  const [questionFromCodeInput, setQuestionFromCodeInput] = useState<string>("");
+
 
   // State to hold the last question type submitted
   const [lastSubmittedType, setLastSubmittedType] = useState<number | null>(null);
@@ -55,9 +58,8 @@ function App() {
   const [,setSubmittedEditorContent] = useState<string>("");
 
   // Handles changes in the text box input
-  // - Updates the `inputValue` 
-  const handleTextBoxChange = (value: string) => {
-    setInputValue(value);
+  const handleTextBoxChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (value: string) => {
+    setter(value);
     console.log("Input value:", value);
   };
   
@@ -91,20 +93,22 @@ function App() {
   )
 
   // Handles Form Submission
-  const handleTextSubmit = async(questionType: number) => {
-    console.log("Submitting value:", inputValue);
-    setInputValue('')
+  const handleTextSubmit = async(questionType: number, input: string, 
+    setter: React.Dispatch<React.SetStateAction<string>>) => {
+    console.log("Submitting value:", input);
+
+    setter("")
 
     setQuestion({
       question_type: questionType,
-      question: inputValue
+      question: input
     })
 
     setDisplayInEditor(false);
 
     await postText({
       question_type: questionType,
-      question: inputValue
+      question: input
     })
 
     console.log("API request sent");
@@ -114,6 +118,7 @@ function App() {
       setCurrentTextResponseIndex(textResponseHistory.length);
 
     setLastSubmittedType(questionType)
+
 
     console.log('Received response:', textData);
   }
@@ -140,24 +145,27 @@ function App() {
   
 
   // Handle Code Question Submission
-  const handleCodeQuestionSubmit = async(questionType: number) => {
-    console.log("Submitting value:", inputValue);
+  const handleCodeQuestionSubmit = async(questionType: number, input: string, 
+    setter: React.Dispatch<React.SetStateAction<string>>) => {
+    console.log("Submitting value:", input);
     console.log("Submitted code:", editorContent);
 
+    setter("");
+
     setSubmittedEditorContent(editorContent);
-    setInputValue('')
 
     setCodeQuestion({
       question_type: questionType,
-      code: inputValue + editorContent
+      code: input + editorContent
     })
     
     setDisplayInEditor(false);
 
     await postCodeQuestion({
       question_type: questionType,
-      code: inputValue + editorContent
+      code: input + editorContent
     })
+
 
     console.log("API request sent");
 
@@ -274,20 +282,20 @@ function App() {
             <div>
               <Collapsable header="How To Write Code">
                 <TextBox className='how-to-write-code-textbox' 
-                         onChange={handleTextBoxChange} 
-                         input={inputValue}
-                         onEnterPress={() => handleTextSubmit(1)} 
+                         onChange={handleTextBoxChange(setHowToWriteCodeInput)} 
+                         input={howToWriteCodeInput}
+                         onEnterPress={() => handleTextSubmit(1, howToWriteCodeInput, setHowToWriteCodeInput)} 
                 />
-                <SubmitButton onClick={() => handleTextSubmit(1)} />
+                <SubmitButton onClick={() => handleTextSubmit(1, howToWriteCodeInput,  setHowToWriteCodeInput)} />
               </Collapsable>
 
               <Collapsable header="General Question">
               <TextBox className='general-question-textbox' 
-                         onChange={handleTextBoxChange} 
-                         input={inputValue}
-                         onEnterPress={() => handleTextSubmit(2)} 
+                         onChange={handleTextBoxChange(setGeneralQuestionInput)} 
+                         input={generalQuestionInput}
+                         onEnterPress={() => handleTextSubmit(2, generalQuestionInput, setGeneralQuestionInput)} 
                 />
-                <SubmitButton onClick={() => handleTextSubmit(2)} />
+                <SubmitButton onClick={() => handleTextSubmit(2, generalQuestionInput, setGeneralQuestionInput)} />
               </Collapsable>
 
               <Collapsable header="How To Fix Code">
@@ -298,11 +306,11 @@ function App() {
               <Collapsable header="Question From Code">
                 <p className='questionText'>Ask a question for the Code in the Code Editor</p>
               <TextBox className='question-from-code-textbox' 
-                         onChange={handleTextBoxChange} 
-                         input={inputValue}
-                         onEnterPress={() => handleCodeQuestionSubmit(4)} 
+                         onChange={handleTextBoxChange(setQuestionFromCodeInput)} 
+                         input={questionFromCodeInput}
+                         onEnterPress={() =>  handleCodeQuestionSubmit(4, questionFromCodeInput, setQuestionFromCodeInput)} 
                 />
-                <SubmitButton onClick={() => handleCodeQuestionSubmit(4)} />
+                <SubmitButton onClick={() =>  handleCodeQuestionSubmit(4, questionFromCodeInput, setQuestionFromCodeInput)} />
               </Collapsable>
             </div>
           
