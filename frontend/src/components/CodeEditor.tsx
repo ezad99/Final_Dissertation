@@ -21,7 +21,7 @@ const CodeEditor = ({value, onChange}: {value: string | undefined; onChange: (va
                     enabled: false,
                     },
                 }}
-                height="80vh"
+                height="76vh"
                 theme="vs-dark"
                 defaultLanguage="java"
                 defaultValue=""

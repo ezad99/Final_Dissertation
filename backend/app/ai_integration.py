@@ -2,13 +2,12 @@ import os
 from dotenv import load_dotenv
 from .constants import QUESTION_CONSTANTS
 import openai
+import asyncio
 
-# Load environment variables from .env file
 load_dotenv()
 
 api_key = os.getenv('OPENAI_API_KEY')
 
-# Ensure the API key is available
 if not api_key:
     raise ValueError(
         "OpenAI API key not found. Ensure it is set correctly in .env file")
@@ -46,10 +45,18 @@ def process_text_question(question_type: int, question: str) -> str:
     return response_text
 
 
-def main():
-    # Call your main logic here
-    process_text_question(1, "How to create a quicksort algorithm")
+async def warm_up_openai():
+    """Send a small request to OpenAI to prevent cold starts."""
+    try:
+        print("Warming up OpenAI API...")
+        await process_text_question(1, "Warm-up request")
+        print("OpenAI API warmed up successfully!")
+    except Exception as e:
+        print(f"OpenAI warm-up failed: {e}")
 
+
+def main():
+    process_text_question(1, "How to create a quicksort algorithm")
 
 if __name__ == "__main__":
     main()
