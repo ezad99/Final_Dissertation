@@ -4,21 +4,7 @@
 
 The system leverages a modular full-stack architecture using **React (Vite)** on the frontend and **FastAPI** on the backend. It integrates with the **OpenAI API** to deliver educationally tailored responses based on the specific nature of user queries.
 
----
-
-## Features
-
-- AI-enhanced assistance for learning programming
-- Structured question types to promote intentional learning
-- Code editor with syntax highlighting and line numbering
-- Support for debugging, general queries, and code comprehension
-- Response and code history for iterative learning
-- Integrated with OpenAI’s LLM via prompt engineering
-- Dockerized architecture for easy deployment and scalability
-
----
-
-## System Architecture
+## Repository Layout
 
 GuruJava follows a clear separation of concerns between its frontend and backend:
 
@@ -41,19 +27,6 @@ Final_Dissertation/
 - **Frontend**: Developed with React and TypeScript via Vite for a fast and responsive user interface.
 - **Backend**: Built with FastAPI to handle API logic, prompt customization, and communication with the OpenAI API.
 
----
-
-## Educational Philosophy
-
-GuruJava is designed with the explicit intention of guiding student learning. It employs prompt engineering strategies to deliver responses that:
-- Encourage students to reflect on their queries
-- Offer explanations over answers
-- Support iterative learning and self-correction
-
-By categorizing questions into predefined types, the system enhances the specificity and relevance of the AI’s responses.
-
----
-
 ## Question Types
 
 The application supports four distinct question modes:
@@ -64,8 +37,6 @@ The application supports four distinct question modes:
 4. **Question from Code**
 
 Each mode is designed to provide context-sensitive guidance. This structure helps reinforce correct practices and deepens understanding through focused interaction.
-
----
 
 ## User Interface
 
@@ -79,8 +50,6 @@ The user interface prioritizes simplicity and accessibility:
 
 This ensures users can focus on learning objectives without distraction.
 
----
-
 ## Running the Application (via Docker)
 
 ### 1. Clone the Repository
@@ -91,24 +60,27 @@ cd Final_Dissertation
 ```
 
 ### 2. Set Up Environment Variables
+
 Create a .env file in the backend/ directory:
+
 ```
 OPENAI_API_KEY=your-openai-api-key
 ```
+
 ### 3. Build and Start the Application
 
 ```bash
 docker-compose up --build
 ```
 
-
-Frontend: http://localhost:3000
+Frontend: http://localhost:5173
 
 Backend: http://localhost:8000
 
 ## Local Development (Without Docker)
 
 ### Backend (FastAPI)
+
 ```
 cd backend
 python -m venv venv
@@ -116,12 +88,15 @@ source venv/bin/activate  # For Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
+
 ### Frontend (Vite + React)
+
 ```
 cd frontend
 npm install
 npm run dev
 ```
+---
 
 License
 This project is licensed under the MIT License. See the LICENSE file for more details.
